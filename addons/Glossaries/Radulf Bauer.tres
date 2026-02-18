@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DialogicGlossary" load_steps=2 format=3 uid="uid://dl5arti26ldur"]
+
+[ext_resource type="Script" uid="uid://bh8w1ygxvhjks" path="res://addons/dialogic/Modules/Glossary/glossary_resource.gd" id="1_gycqo"]
+
+[resource]
+script = ExtResource("1_gycqo")
+entries = {
+"Radulf Bauer": {
+"name": "Radulf Bauer",
+"text": "A legened among the kingdoms soldiers and also our protagonist's grandfather. He fought in many battles in The Great war in which he killed over 150 Rats. Sadly he didn't survive them all.",
+"title": "Radulf Bauer"
+}
+}
+enabled = true
+_translation_id = ""
+_translation_keys = {}

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cua1mxsdtn5ui"]
+
+[ext_resource type="Script" uid="uid://cm5hwlf0ihtuj" path="res://scripts/moving_platform.gd" id="1_ms375"]
+[ext_resource type="Texture2D" uid="uid://py1phhfcmy4b" path="res://assets/tiles/Tiles.png" id="2_1tdcd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mb26n"]
+size = Vector2(64, 7)
+
+[node name="moving_platform" type="AnimatableBody2D"]
+sync_to_physics = false
+script = ExtResource("1_ms375")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_1tdcd")
+region_enabled = true
+region_rect = Rect2(1, 252, 63, 19)
+
+[node name="Collision_shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_mb26n")

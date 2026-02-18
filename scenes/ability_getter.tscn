@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://q25dyqalrwpw"]
+
+[ext_resource type="Script" uid="uid://ctkcp6ubtnq62" path="res://scripts/ability_getter.gd" id="1_kdndm"]
+
+[sub_resource type="Gradient" id="Gradient_kdndm"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.577922, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.117164, 0.447337, 0.642931, 1, 0.211765, 0, 0.670588, 0.682353)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_w30n5"]
+gradient = SubResource("Gradient_kdndm")
+width = 6
+height = 6
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mict7"]
+
+[node name="ability_getter" type="Sprite2D" groups=["interactable"]]
+texture = SubResource("GradientTexture2D_w30n5")
+script = ExtResource("1_kdndm")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_mict7")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

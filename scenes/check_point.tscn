@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccrik7d0bnwj7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3gqoq"]
+size = Vector2(20, 39)
+
+[node name="check_point" type="Area2D" groups=["check_points"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -9.5)
+shape = SubResource("RectangleShape2D_3gqoq")
+debug_color = Color(2.40654e-07, 0.639392, 0.365312, 0.42)
