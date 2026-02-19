@@ -19,11 +19,17 @@ func physics_update(_delta: float) -> void:
 		finished.emit("jump")
 	if dir_x == 0:
 		finished.emit("idle")
-	if !owner.is_on_floor():
+	if !owner.is_on_floor() and Global.wall_jump_unlocked:
 		if (owner.is_on_wall() or owner.velocity.x == 0) and (Input.is_action_pressed("left") or Input.is_action_pressed("right")):
 			finished.emit("wall_jump")
 		else: 
 			owner.velocity.y += owner.gravity * _delta
+	elif !Global.wall_jump_unlocked:
+		owner.velocity.y += owner.gravity * _delta
+	if (Input.is_action_pressed("left") or Input.is_action_pressed("right")) and Input.is_action_just_pressed("dash"):
+		if owner.can_dash and Global.dash_unlocked:
+			finished.emit("dash")
+			
 	owner.move_and_slide()
 
 func exit() -> void:

@@ -21,14 +21,16 @@ func physics_update(_delta: float) -> void:
 		owner.anim.flip_h = false
 	if dir_x == -1:
 		owner.anim.flip_h = true
-	owner.move_and_slide()
+	
 	if owner.is_on_floor():
 		if dir_x == 0:
 			finished.emit("idle")
 		else: finished.emit("run")
-	if owner.is_on_wall():
-		
+	if owner.is_on_wall() and Global.wall_jump_unlocked:
 		finished.emit("wall_jump")
-
+	if Input.is_action_just_pressed("dash") and (Input.is_action_pressed("left") or Input.is_action_pressed("right")):
+		if owner.can_dash and Global.dash_unlocked:
+			finished.emit("dash")
+	owner.move_and_slide()
 func exit() -> void:
 	pass
