@@ -12,7 +12,9 @@ func _ready() -> void:
 	SignalBus.update_ink.connect(update_ink_count)
 	SignalBus.message_popup.connect(on_message_recived)
 	SignalBus.player_died.connect(on_died)
-
+	death_rect.modulate = Color(0,0,0,1)
+	dark_screen(0)
+	Dialogic.signal_event.connect(on_dialogic_signal)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -49,3 +51,17 @@ func on_died():
 	SignalBus.death_finished.emit()
 	tween.tween_property(death_label,"modulate",Color(1,1,1,0),0.75)
 	tween.tween_property(death_rect,"modulate",Color(0,0,0,0),0.75)
+
+func dark_screen(value:int = 1,dur:float = 1):
+	var tween = self.create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(death_rect,"modulate",Color(0,0,0,value),dur)
+	
+
+func on_dialogic_signal(arg:String):
+	if arg == "back_to_main":
+		dark_screen()
+		#TODO: transition to main
+	if arg == "try_again":
+		dark_screen()
+		await get_tree().create_timer(1).timeout
+		get_tree().reload_current_scene()

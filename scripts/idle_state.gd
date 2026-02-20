@@ -7,6 +7,11 @@ func enter(previous_state_path: String, data := {}) -> void:
 
 func physics_update(_delta: float) -> void:
 	owner.anim.play("idle")
+	if !owner.can_move:
+		if !owner.is_on_floor():
+			owner.velocity.y += owner.gravity * _delta
+			owner.move_and_slide()
+		return
 	if (Input.is_action_pressed("left") and !Input.is_action_pressed("right")) or (Input.is_action_pressed("right") and !Input.is_action_pressed("left")):
 		if Input.is_action_just_pressed("dash") and owner.can_dash and Global.dash_unlocked:
 			finished.emit("dash")

@@ -9,6 +9,9 @@ func enter(previous_state_path: String, data := {}) -> void:
 
 func physics_update(_delta: float) -> void:
 	owner.anim.play("dash")
+	if !owner.can_move:
+		finished.emit("idle")
+		return
 	var dir_x = Input.get_axis("left","right")
 	owner.velocity.x += dash_speed*dir_x * _delta
 	owner.move_and_slide()

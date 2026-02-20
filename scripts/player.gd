@@ -12,14 +12,19 @@ var wall_jump_lock_time:float = 0.05
 var wall_contact_coyote_time:float = 0.1
 var last_pos:Vector2
 var dead:bool
+var can_move:bool = true
 const Y_THRESHOLD:int = 1000
 @onready var cam: Camera2D = $Camera2D
-
+@onready var dash_bar: ProgressBar = $CanvasLayer/MarginContainer/ProgressBar
+var dash_cooldown:float = 2.0
 @onready var popup: PopupPanel = $Popup
 var can_dash:bool = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.death_finished.connect(on_death_anim_finished)
+	dash_bar.max_value = dash_cooldown
+	dash_bar.value = 0
+	dash_bar.modulate = Color(1,1,1,0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,7 +32,7 @@ func _process(delta: float) -> void:
 	if !dead:
 		if position.y >= Y_THRESHOLD:
 			on_dead()
-	
+		
 	pass
 
 
@@ -46,8 +51,13 @@ func _on_interact_zone_area_entered(area: Area2D) -> void:
 		popup.popup()
 	if area.is_in_group("check_points"):
 		last_pos = area.position
+		if !Global.reached_check_points.has(area.name):
+			SignalBus.message_popup.emit("Check-Point Reached!")
+			Global.reached_check_points.append(area.name)
 	if area.is_in_group("kills"):
 		on_dead()
+	if area.get_parent().is_in_group("wizard"):
+		can_move = false
 
 func _on_interact_zone_area_exited(area: Area2D) -> void:
 	if area.get_parent().is_in_group("interactable"):
@@ -69,5 +79,12 @@ func on_death_anim_finished():
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if anim.animation == "dash":
-		await get_tree().create_timer(2).timeout
+		var tween = get_tree().create_tween().set_parallel(true)
+		tween.tween_property(dash_bar,"modulate",Color(1,1,1,0.25),0.2)
+		tween.tween_property(dash_bar,"value",dash_cooldown,dash_cooldown-0.1)
+		
+		tween.chain().tween_property(dash_bar,"modulate",Color(1,1,1,0),0.1)
+		await tween.finished
+		dash_bar.value = 0
 		can_dash = true
+		

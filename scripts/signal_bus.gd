@@ -3,6 +3,7 @@ signal update_ink
 signal message_popup(message:String)
 signal player_died
 signal death_finished
+signal  update_map
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

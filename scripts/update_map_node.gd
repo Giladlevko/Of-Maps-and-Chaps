@@ -19,13 +19,15 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
 		in_area = true
 		player = body
-		if Global.ink_amount >= ink_cost:
-			SignalBus.message_popup.emit("Map Updated!")
-			await get_tree().create_timer(3).timeout
-			Global.ink_amount = clamp(Global.ink_amount-ink_cost,0,Global.max_ink)
-			SignalBus.update_ink.emit()
-		else:
-			SignalBus.message_popup.emit("More Ink Needed!")
+		if !Global.updated_areas.has(map_update_id):
+			if Global.ink_amount >= ink_cost:
+				SignalBus.message_popup.emit("Map Updated!")
+				SignalBus.update_map.emit(map_update_id)
+				await get_tree().create_timer(3).timeout
+				Global.ink_amount = clamp(Global.ink_amount-ink_cost,0,Global.max_ink)
+				SignalBus.update_ink.emit()
+			else:
+				SignalBus.message_popup.emit("More Ink Needed!")
 
 
 func _on_body_exited(body: Node2D) -> void:

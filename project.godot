@@ -33,6 +33,7 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "Dialog_1": "res://addons/timelines/Dialog_1.dtl",
+"Dialog_2": "res://addons/timelines/Dialog_2.dtl",
 "dialog_1": "res://addons/timelines/dialog_1.dtl",
 "tree_poem": "res://addons/timelines/tree_poem.dtl"
 }
@@ -85,6 +86,7 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 interactable=""
 check_points=""
 kills=""
+wizard=""
 
 [input]
 

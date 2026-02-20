@@ -3,14 +3,15 @@
 [ext_resource type="Script" uid="uid://qshjqkpfdfq5" path="res://scripts/update_map_node.gd" id="1_w5lk4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r2y3q"]
-size = Vector2(42, 45)
+size = Vector2(54, 88)
 
 [node name="update_map_node" type="Area2D"]
 script = ExtResource("1_w5lk4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -12.5)
+position = Vector2(0, -37)
 shape = SubResource("RectangleShape2D_r2y3q")
+debug_color = Color(0.981336, 0, 0.329733, 0.42)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

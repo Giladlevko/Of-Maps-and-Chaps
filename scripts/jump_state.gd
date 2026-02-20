@@ -9,6 +9,9 @@ func enter(previous_state_path: String, data := {}) -> void:
 
 func physics_update(_delta: float) -> void:
 	owner.anim.play("jump")
+	if !owner.can_move:
+		finished.emit("idle")
+		return
 	var dir_x = Input.get_axis("left","right")
 	if Input.is_action_pressed("left") and Input.is_action_pressed("right"): 
 		dir_x = 0

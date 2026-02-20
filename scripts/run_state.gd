@@ -9,6 +9,9 @@ func enter(previous_state_path: String, data := {}) -> void:
 func physics_update(_delta: float) -> void:
 	var dir_x = Input.get_axis("left","right")
 	owner.velocity.x = owner.speed_x * dir_x
+	if !owner.can_move:
+		finished.emit("idle")
+		return
 	if Input.is_action_pressed("left") and Input.is_action_pressed("right"): 
 		finished.emit("idle")
 	if dir_x == 1:
