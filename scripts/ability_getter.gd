@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 	if in_area:
 		if Input.is_action_just_pressed("interact"):
 			print("pressed")
-			player.popup.hide()
+			player.popup.hide_()
 			var prop = ability_key_finder[ability_type]
 			Global.set(prop, true)
 			SignalBus.message_popup.emit(ability_type+" Unlocked!")
@@ -50,6 +50,6 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		in_area = false
 
 func animate():
-	var tween = self.create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_loops()
+	var tween = self.create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).set_loops().bind_node(self)
 	tween.tween_property(self,"position",Vector2(position.x,position.y + 3),1)
 	tween.tween_property(self,"position",Vector2(position.x,position.y - 3),1)

@@ -1,3 +1,47 @@
-[gd_resource type="Theme" format=3 uid="uid://cbwouf86hnij0"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://cbwouf86hnij0"]
+
+[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/Sprite sheet for Basic Pack.png" id="1_12j8l"]
+[ext_resource type="FontFile" uid="uid://csmfu8i2u5qn5" path="res://assets/PixelOperator8.ttf" id="1_ktcvj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ktcvj"]
+texture = ExtResource("1_12j8l")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(741, 38, 22, 22)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_12j8l"]
+texture = ExtResource("1_12j8l")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(709, 36, 22, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c5icn"]
+texture = ExtResource("1_12j8l")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(741, 38, 22, 22)
 
 [resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0.666667, 0.47451, 0.34902, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/constants/outline_size = 10
+Button/fonts/font = ExtResource("1_ktcvj")
+Button/styles/hover = SubResource("StyleBoxTexture_ktcvj")
+Button/styles/normal = SubResource("StyleBoxTexture_12j8l")
+Button/styles/pressed = SubResource("StyleBoxTexture_c5icn")
+Label/colors/font_outline_color = Color(0.666667, 0.47451, 0.34902, 1)
+Label/constants/outline_size = 10
+Label/fonts/font = ExtResource("1_ktcvj")
+RichTextLabel/colors/font_outline_color = Color(0.666667, 0.47451, 0.34902, 1)
+RichTextLabel/constants/outline_size = 10
+RichTextLabel/fonts/normal_font = ExtResource("1_ktcvj")

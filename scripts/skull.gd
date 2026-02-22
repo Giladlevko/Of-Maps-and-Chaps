@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 					Global.correct_skulls.erase(name)
 					print("erased_name")
 				if Global.correct_skulls.size() == 3:
-					Global.ink_amount += 5
+					Global.ink_amount = clamp(Global.ink_amount+5,0,Global.max_ink)
 					SignalBus.update_ink.emit()
 					Global.skulls_can_give = false
 	frame = current_dir

@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://v6cs0vjyj3vu"]
+[gd_scene load_steps=51 format=3 uid="uid://v6cs0vjyj3vu"]
 
 [ext_resource type="Texture2D" uid="uid://c076h0x65xeo4" path="res://assets/player_anim/die.png" id="1_qlg0r"]
 [ext_resource type="Script" uid="uid://dgur5opt3teql" path="res://scripts/player.gd" id="1_ur7pv"]
@@ -16,10 +16,13 @@
 [ext_resource type="Script" uid="uid://dgadmmocwtcwf" path="res://scripts/dash.gd" id="12_oprun"]
 [ext_resource type="Texture2D" uid="uid://o8cic5vxhv0a" path="res://assets/interact_popup.png" id="13_f1ej7"]
 [ext_resource type="PackedScene" uid="uid://q4awegofsse7" path="res://scenes/player_ui.tscn" id="14_f1ej7"]
+[ext_resource type="Script" uid="uid://be7v6myttvtxe" path="res://scripts/popup.gd" id="16_4r5pv"]
+[ext_resource type="AudioStream" uid="uid://c1wtbptsi0cj2" path="res://assets/sounds/Stone Jump.wav" id="17_qfm1y"]
+[ext_resource type="AudioStream" uid="uid://dtbactejw634l" path="res://assets/sounds/tap.wav" id="18_fulsm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oprun"]
 radius = 5.0
-height = 16.5
+height = 18.5
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y4r1p"]
 radius = 5.0
@@ -219,14 +222,26 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8ls1"]
-texture = ExtResource("13_f1ej7")
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a8ls1"]
 bg_color = Color(0.470076, 0.470076, 0.470076, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfm1y"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fulsm"]
+random_pitch = 1.2
+streams_count = 1
+stream_0/stream = ExtResource("17_qfm1y")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4r5pv"]
+random_pitch = 1.1
+streams_count = 1
+stream_0/stream = ExtResource("18_fulsm")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_60mlk"]
+random_pitch = 1.2
+streams_count = 1
+stream_0/stream = ExtResource("17_qfm1y")
 
 [node name="player" type="CharacterBody2D"]
 z_index = 1
@@ -236,7 +251,7 @@ script = ExtResource("1_ur7pv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="interact_zone"]
 z_index = 1
-position = Vector2(0, 3.75)
+position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_oprun")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -245,10 +260,8 @@ shape = SubResource("CapsuleShape2D_y4r1p")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_dt7fs")
-animation = &"dash"
+animation = &"idle"
 autoplay = "idle"
-frame = 3
-frame_progress = 1.0
 
 [node name="states" type="Node" parent="."]
 script = ExtResource("5_ur7pv")
@@ -272,20 +285,9 @@ script = ExtResource("12_oprun")
 process_mode = 3
 offset = Vector2(0, -30)
 zoom = Vector2(4, 4)
-limit_bottom = 450
+limit_bottom = 350
+limit_smoothed = true
 position_smoothing_enabled = true
-
-[node name="Popup" type="PopupPanel" parent="."]
-canvas_item_default_texture_filter = 0
-mode = 1
-title = "e"
-initial_position = 1
-size = Vector2i(40, 40)
-visible = true
-keep_title_visible = true
-content_scale_factor = 0.5
-theme = ExtResource("12_jej6c")
-theme_override_styles/panel = SubResource("StyleBoxTexture_a8ls1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 0
@@ -305,6 +307,18 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 17
+
+[node name="Popup" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("12_jej6c")
+texture = ExtResource("13_f1ej7")
+script = ExtResource("16_4r5pv")
+
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer"]
 modulate = Color(1, 1, 1, 0.313726)
 custom_minimum_size = Vector2(100, 10)
@@ -318,8 +332,26 @@ show_percentage = false
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("14_f1ej7")]
 
+[node name="sounds" type="Node2D" parent="."]
+
+[node name="jump" type="AudioStreamPlayer2D" parent="sounds"]
+stream = SubResource("AudioStreamRandomizer_fulsm")
+volume_db = -25.0
+pitch_scale = 2.0
+
+[node name="run" type="AudioStreamPlayer2D" parent="sounds"]
+stream = SubResource("AudioStreamRandomizer_4r5pv")
+volume_db = -40.0
+
+[node name="dash" type="AudioStreamPlayer2D" parent="sounds"]
+stream = SubResource("AudioStreamRandomizer_60mlk")
+volume_db = -15.0
+pitch_scale = 5.0
+
 [connection signal="area_entered" from="interact_zone" to="." method="_on_interact_zone_area_entered"]
 [connection signal="area_exited" from="interact_zone" to="." method="_on_interact_zone_area_exited"]
 [connection signal="body_entered" from="interact_zone" to="." method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="interact_zone" to="." method="_on_interact_zone_body_exited"]
+[connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]

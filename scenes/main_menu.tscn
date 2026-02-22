@@ -1,0 +1,279 @@
+[gd_scene load_steps=12 format=3 uid="uid://cutnfwaskdcmu"]
+
+[ext_resource type="Script" uid="uid://cbkc1o0vpxd8m" path="res://scripts/main_menu.gd" id="1_rtw2f"]
+[ext_resource type="Shader" uid="uid://bg11vahmv73fo" path="res://scripts/scroll.gdshader" id="1_wu84c"]
+[ext_resource type="Texture2D" uid="uid://cq5q5eag8iamd" path="res://assets/tiles/Background/01.png" id="2_8ln24"]
+[ext_resource type="Texture2D" uid="uid://gfxpfmbx7nv0" path="res://assets/tiles/Background/02.png" id="3_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://dq53m86gj2n1v" path="res://assets/tiles/Background/03.png" id="4_oa1go"]
+[ext_resource type="Theme" uid="uid://cbwouf86hnij0" path="res://themes/UI_theme.tres" id="5_8ln24"]
+[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/Sprite sheet for Basic Pack.png" id="7_oa1go"]
+[ext_resource type="AudioStream" uid="uid://bpk4ncodep5u5" path="res://assets/sounds/of_maps_and_chaps_main_audio.ogg" id="8_tbmy8"]
+[ext_resource type="AudioStream" uid="uid://clahnhvopbk6b" path="res://assets/sounds/hover-button-287656.mp3" id="9_5dd4i"]
+[ext_resource type="AudioStream" uid="uid://dpn2k2ho1ckts" path="res://assets/sounds/click-buttons-ui-menu-sounds-effects-button-2-203594.mp3" id="10_lgwnu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbmy8"]
+shader = ExtResource("1_wu84c")
+shader_parameter/speed = 0.05
+
+[node name="SubViewportContainer" type="SubViewportContainer"]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="main_menu" type="Control" parent="SubViewport" node_paths=PackedStringArray("start_button", "quit_button", "credits_button", "back_to_main_button", "death_rect", "death_screen", "press_sfx", "hover_sfx")]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rtw2f")
+start_button = NodePath("MarginContainer/button_Container/start_button")
+quit_button = NodePath("MarginContainer/button_Container/quit_button")
+credits_button = NodePath("MarginContainer/button_Container/credits_button")
+back_to_main_button = NodePath("credits_container/NinePatchRect/MarginContainer/back_to_main_button")
+death_rect = NodePath("color_rect_container/ColorRect")
+death_screen = NodePath("color_rect_container")
+press_sfx = NodePath("audio/press")
+hover_sfx = NodePath("audio/hover")
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/main_menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="MarginContainer" parent="SubViewport/main_menu/MarginContainer"]
+texture_filter = 1
+layout_mode = 2
+
+[node name="NinePatchRect" type="TextureRect" parent="SubViewport/main_menu/MarginContainer/background"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_tbmy8")
+layout_mode = 2
+texture = ExtResource("2_8ln24")
+expand_mode = 1
+
+[node name="NinePatchRect2" type="TextureRect" parent="SubViewport/main_menu/MarginContainer/background"]
+layout_mode = 2
+texture = ExtResource("3_rtw2f")
+expand_mode = 1
+
+[node name="NinePatchRect3" type="TextureRect" parent="SubViewport/main_menu/MarginContainer/background"]
+layout_mode = 2
+texture = ExtResource("4_oa1go")
+
+[node name="button_Container" type="VBoxContainer" parent="SubViewport/main_menu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="start_button" type="Button" parent="SubViewport/main_menu/MarginContainer/button_Container"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme = ExtResource("5_8ln24")
+theme_override_font_sizes/font_size = 24
+text = "Start!"
+
+[node name="quit_button" type="Button" parent="SubViewport/main_menu/MarginContainer/button_Container"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme = ExtResource("5_8ln24")
+theme_override_font_sizes/font_size = 24
+text = "Quit"
+
+[node name="credits_button" type="Button" parent="SubViewport/main_menu/MarginContainer/button_Container"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme = ExtResource("5_8ln24")
+theme_override_font_sizes/font_size = 24
+text = "Credits"
+
+[node name="label_Container" type="VBoxContainer" parent="SubViewport/main_menu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="Control" type="Control" parent="SubViewport/main_menu/MarginContainer/label_Container"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/main_menu/MarginContainer/label_Container/Control"]
+layout_mode = 1
+offset_left = -277.5
+offset_right = 277.5
+offset_bottom = 40.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/main_menu/MarginContainer/label_Container/Control/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Control" type="Control" parent="SubViewport/main_menu/MarginContainer/label_Container/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="title_label" type="Label" parent="SubViewport/main_menu/MarginContainer/label_Container/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("5_8ln24")
+theme_override_font_sizes/font_size = 48
+text = "Of Maps and Chaps"
+
+[node name="credits_container" type="MarginContainer" parent="SubViewport/main_menu"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="SubViewport/main_menu/credits_container"]
+layout_mode = 2
+texture = ExtResource("7_oa1go")
+region_rect = Rect2(741, 38, 22, 22)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="title" type="VBoxContainer" parent="SubViewport/main_menu/credits_container/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/separation = 30
+
+[node name="Control" type="Control" parent="SubViewport/main_menu/credits_container/NinePatchRect/title"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SubViewport/main_menu/credits_container/NinePatchRect/title"]
+layout_mode = 2
+theme = ExtResource("5_8ln24")
+theme_override_font_sizes/font_size = 32
+text = "Credits:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/main_menu/credits_container/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 204.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="Control" type="Control" parent="SubViewport/main_menu/credits_container/NinePatchRect/HBoxContainer"]
+layout_mode = 2
+
+[node name="credits" type="VBoxContainer" parent="SubViewport/main_menu/credits_container/NinePatchRect/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="Control" type="Control" parent="SubViewport/main_menu/credits_container/NinePatchRect/HBoxContainer/credits"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="SubViewport/main_menu/credits_container/NinePatchRect/HBoxContainer/credits"]
+clip_contents = false
+custom_minimum_size = Vector2(1000, 550)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("5_8ln24")
+theme_override_constants/line_separation = 12
+bbcode_enabled = true
+text = "[font_size={24}]Developer / Musician: 
+Gilad Levkowitz
+[font_size={20}]     
+Got any questions / complaints? 
+Contact me at MrLadsGames@gmail.com
+
+[font_size={20}]Art:
+[font_size={16}]Wizard / Player - KingBell
+World - Anokolisa
+UI - Sprout Lands By : Cup Nooble
+
+[font_size={20}]SFX:
+[font_size={16}]Free_Sound Community (Pixabay) , TomMusic
+Music made with Bespoke Synth!
+
+[font_size={20}]Dialog System: 
+[font_size={16}]Made with Dialogic!"
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/main_menu/credits_container/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -257.0
+offset_bottom = 49.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 35
+
+[node name="back_to_main_button" type="Button" parent="SubViewport/main_menu/credits_container/NinePatchRect/MarginContainer"]
+custom_minimum_size = Vector2(250, 40)
+layout_mode = 2
+theme = ExtResource("5_8ln24")
+text = "Back To Main Menu"
+
+[node name="color_rect_container" type="MarginContainer" parent="SubViewport/main_menu"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="SubViewport/main_menu/color_rect_container"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+
+[node name="music" type="AudioStreamPlayer" parent="SubViewport/main_menu"]
+stream = ExtResource("8_tbmy8")
+volume_db = -50.0
+autoplay = true
+
+[node name="audio" type="Node" parent="SubViewport/main_menu"]
+
+[node name="hover" type="AudioStreamPlayer" parent="SubViewport/main_menu/audio"]
+stream = ExtResource("9_5dd4i")
+volume_db = -27.0
+
+[node name="press" type="AudioStreamPlayer" parent="SubViewport/main_menu/audio"]
+stream = ExtResource("10_lgwnu")
+
+[connection signal="mouse_entered" from="SubViewport/main_menu/MarginContainer/button_Container/start_button" to="SubViewport/main_menu" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewport/main_menu/MarginContainer/button_Container/start_button" to="SubViewport/main_menu" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="SubViewport/main_menu/MarginContainer/button_Container/start_button" to="SubViewport/main_menu" method="_on_start_button_pressed"]
+[connection signal="mouse_entered" from="SubViewport/main_menu/MarginContainer/button_Container/quit_button" to="SubViewport/main_menu" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewport/main_menu/MarginContainer/button_Container/quit_button" to="SubViewport/main_menu" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="SubViewport/main_menu/MarginContainer/button_Container/quit_button" to="SubViewport/main_menu" method="_on_quit_button_pressed"]
+[connection signal="mouse_entered" from="SubViewport/main_menu/MarginContainer/button_Container/credits_button" to="SubViewport/main_menu" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewport/main_menu/MarginContainer/button_Container/credits_button" to="SubViewport/main_menu" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="SubViewport/main_menu/MarginContainer/button_Container/credits_button" to="SubViewport/main_menu" method="_on_credits_button_pressed"]
+[connection signal="mouse_entered" from="SubViewport/main_menu/credits_container/NinePatchRect/MarginContainer/back_to_main_button" to="SubViewport/main_menu" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewport/main_menu/credits_container/NinePatchRect/MarginContainer/back_to_main_button" to="SubViewport/main_menu" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="SubViewport/main_menu/credits_container/NinePatchRect/MarginContainer/back_to_main_button" to="SubViewport/main_menu" method="_on_credits_button_pressed"]

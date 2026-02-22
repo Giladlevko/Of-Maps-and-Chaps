@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
 		Dialogic.start("Dialog_"+str(dialog_id))
 		dialog_id += 1
 		dialog_playing = true
-		player.popup.hide()
+		player.popup.hide_()
 	move_and_slide()
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if anim.animation == "teleport":

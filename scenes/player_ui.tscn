@@ -1,8 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://q4awegofsse7"]
+[gd_scene load_steps=18 format=3 uid="uid://q4awegofsse7"]
 
 [ext_resource type="Script" uid="uid://bry0xo81di5qg" path="res://scripts/ui.gd" id="1_jkj6h"]
 [ext_resource type="Theme" uid="uid://cbwouf86hnij0" path="res://themes/UI_theme.tres" id="2_sk4pr"]
+[ext_resource type="Texture2D" uid="uid://k7ffod7v8p0w" path="res://assets/map.png" id="3_8isll"]
 [ext_resource type="Texture2D" uid="uid://bnar4jb3ugwf8" path="res://assets/ink_drop.png" id="3_48xfa"]
+[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/Sprite sheet for Basic Pack.png" id="4_7ctsh"]
+[ext_resource type="Script" uid="uid://bj24co5l7ll6" path="res://scripts/map_areas.gd" id="6_bkx2g"]
+[ext_resource type="AudioStream" uid="uid://clahnhvopbk6b" path="res://assets/sounds/hover-button-287656.mp3" id="7_wsb5h"]
+[ext_resource type="AudioStream" uid="uid://dpn2k2ho1ckts" path="res://assets/sounds/click-buttons-ui-menu-sounds-effects-button-2-203594.mp3" id="8_g4s8q"]
 
 [sub_resource type="Animation" id="Animation_7ctsh"]
 length = 0.001
@@ -41,7 +46,88 @@ _data = {
 &"shine": SubResource("Animation_8isll")
 }
 
-[node name="UI" type="Control"]
+[sub_resource type="Animation" id="Animation_n31oh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bkx2g"]
+resource_name = "open"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 300), Vector2(400, 300)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.27, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wsb5h"]
+_data = {
+&"RESET": SubResource("Animation_n31oh"),
+&"open": SubResource("Animation_bkx2g")
+}
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bkx2g"]
+texture = ExtResource("4_7ctsh")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(869, 102, 22, 22)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n31oh"]
+texture = ExtResource("4_7ctsh")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(869, 102, 22, 22)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wsb5h"]
+texture = ExtResource("4_7ctsh")
+region_rect = Rect2(837, 100, 22, 24)
+
+[node name="UI" type="Control" node_paths=PackedStringArray("ink_label", "ink_anim", "map", "map_container", "message_label", "death_rect", "death_label", "map_button", "back_to_game_button", "death_screen", "close_menu_button", "main_menu_button", "menu_button", "menu_anim", "in_game_menu", "press_sfx", "hover_sfx")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -50,8 +136,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jkj6h")
+ink_label = NodePath("Control/ink_diplay_container/HBoxContainer/ink_label")
+ink_anim = NodePath("Control/ink_diplay_container/HBoxContainer/ink_anim")
+map = NodePath("Control/map_container/map_container/map")
+map_container = NodePath("Control/map_container")
+message_label = NodePath("Control/message_container/VBoxContainer/message_label")
+death_rect = NodePath("Control/death_screen/death_rect")
+death_label = NodePath("Control/death_screen/VBoxContainer/death_label")
+map_button = NodePath("Control/map_button_container/VBoxContainer/Button")
+back_to_game_button = NodePath("Control/map_container/MarginContainer/Button")
+death_screen = NodePath("Control/death_screen")
+close_menu_button = NodePath("Control/in_game_menu/NinePatchRect/Control/Container/close_menu")
+main_menu_button = NodePath("Control/in_game_menu/NinePatchRect/Control/VBoxContainer/Back_to_main_button")
+menu_button = NodePath("Control/map_button_container/VBoxContainer/menu_button")
+menu_anim = NodePath("Control/in_game_menu/NinePatchRect/AnimationPlayer")
+in_game_menu = NodePath("Control/in_game_menu")
+press_sfx = NodePath("audio/press")
+hover_sfx = NodePath("audio/hover")
 
-[node name="death_screen" type="MarginContainer" parent="."]
+[node name="Control" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,18 +162,534 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="death_rect" type="ColorRect" parent="death_screen"]
-modulate = Color(0, 0, 0, 0)
+[node name="map_button_container" type="MarginContainer" parent="Control"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_bottom = 50.0
+grow_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/map_button_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="menu_button" type="Button" parent="Control/map_button_container/VBoxContainer"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_sk4pr")
+theme_override_constants/outline_size = 8
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 16
+text = "Menu / Help"
+
+[node name="Button" type="Button" parent="Control/map_button_container/VBoxContainer"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("2_sk4pr")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 16
+text = "Open Map"
+
+[node name="ink_diplay_container" type="MarginContainer" parent="Control"]
+layout_mode = 1
+offset_right = 192.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ink_diplay_container"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="death_screen"]
+[node name="ink_anim" type="AnimationPlayer" parent="Control/ink_diplay_container/HBoxContainer"]
+libraries = {
+&"": SubResource("AnimationLibrary_bkx2g")
+}
+
+[node name="TextureRect" type="NinePatchRect" parent="Control/ink_diplay_container/HBoxContainer"]
+custom_minimum_size = Vector2(26, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("3_48xfa")
+region_rect = Rect2(0, 0, 13, 18)
+
+[node name="ink_label" type="Label" parent="Control/ink_diplay_container/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_sk4pr")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Ink: 0/10"
+
+[node name="message_container" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -94.5
+offset_right = 94.5
+offset_bottom = 74.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/message_container"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Control" type="Control" parent="Control/message_container/VBoxContainer"]
+layout_mode = 2
+
+[node name="message_label" type="Label" parent="Control/message_container/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme = ExtResource("2_sk4pr")
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 24
+text = "Ink added!"
+
+[node name="in_game_menu" type="MarginContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.5
+offset_right = 4.0
+offset_bottom = 4.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/in_game_menu"]
+layout_mode = 2
+texture = ExtResource("4_7ctsh")
+region_rect = Rect2(709, 36, 22, 24)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/in_game_menu/NinePatchRect"]
+libraries = {
+&"": SubResource("AnimationLibrary_wsb5h")
+}
+
+[node name="Control" type="Control" parent="Control/in_game_menu/NinePatchRect"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/in_game_menu/NinePatchRect/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -128.0
+offset_right = 104.0
+offset_bottom = 55.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="Control" type="Control" parent="Control/in_game_menu/NinePatchRect/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="Back_to_main_button" type="Button" parent="Control/in_game_menu/NinePatchRect/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme = ExtResource("2_sk4pr")
+text = "Back To Main Menu"
+
+[node name="Container" type="MarginContainer" parent="Control/in_game_menu/NinePatchRect/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = -10
+
+[node name="Control" type="Control" parent="Control/in_game_menu/NinePatchRect/Control/Container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="close_menu" type="Button" parent="Control/in_game_menu/NinePatchRect/Control/Container"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme = ExtResource("2_sk4pr")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bkx2g")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n31oh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_wsb5h")
+
+[node name="label_container" type="VBoxContainer" parent="Control/in_game_menu/NinePatchRect/Control"]
+layout_mode = 2
+offset_left = 43.5
+offset_top = 145.0
+offset_right = 371.5
+offset_bottom = 300.0
+theme_override_constants/separation = -50
+
+[node name="Control" type="Control" parent="Control/in_game_menu/NinePatchRect/Control/label_container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/in_game_menu/NinePatchRect/Control/label_container"]
+layout_mode = 2
+theme = ExtResource("2_sk4pr")
+theme_override_constants/line_spacing = 15
+text = "Controls: 
+Run: Left / Right - A / D
+Jump: Space
+Wall Jump: Space + A / D
+(Near Wall)
+Dash: A / D + Shift"
+
+[node name="map_container" type="MarginContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="NinePatchRect" parent="Control/map_container"]
+layout_mode = 2
+texture = ExtResource("4_7ctsh")
+region_rect = Rect2(709, 36, 22, 24)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 5
+
+[node name="map_container" type="MarginContainer" parent="Control/map_container"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="map" type="NinePatchRect" parent="Control/map_container/map_container"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_8isll")
+
+[node name="area_1" type="MarginContainer" parent="Control/map_container/map_container/map"]
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 0
+anchor_left = 0.00176678
+anchor_top = 0.6125
+anchor_right = 0.178445
+anchor_bottom = 0.9875
+script = ExtResource("6_bkx2g")
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_1"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_2" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.193463
+anchor_top = 0.205
+anchor_right = 0.370141
+anchor_bottom = 0.855
+offset_bottom = -10.0
+script = ExtResource("6_bkx2g")
+area_id = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_2"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/map_container/map_container/map/area_2/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.03
+anchor_top = 0.996
+anchor_right = 0.451
+anchor_bottom = 1.144
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map_container/map_container/map/area_2/ColorRect/MarginContainer"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_3" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.272968
+anchor_top = 0.83
+anchor_right = 0.340968
+anchor_bottom = 1.016
+offset_bottom = 3.05176e-05
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_bkx2g")
+area_id = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_3"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_4" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.379
+anchor_top = 0.578
+anchor_right = 0.43
+anchor_bottom = 0.896
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_bkx2g")
+area_id = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_4"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_5" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.409
+anchor_top = 0.08
+anchor_right = 0.572438
+anchor_bottom = 0.505
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_bkx2g")
+area_id = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_5"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/map_container/map_container/map/area_5/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.205
+anchor_top = -0.182353
+anchor_right = 0.235
+anchor_bottom = 0.0494705
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map_container/map_container/map/area_5/ColorRect/MarginContainer2"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="MarginContainer3" type="MarginContainer" parent="Control/map_container/map_container/map/area_5/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.99
+anchor_top = -0.00588235
+anchor_right = 1.09
+anchor_bottom = 0.342235
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Control/map_container/map_container/map/area_5/ColorRect/MarginContainer3"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_6" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.393993
+anchor_top = 0.1425
+anchor_right = 0.413993
+anchor_bottom = 0.2235
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_6"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_7" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.571
+anchor_top = 0.271
+anchor_right = 0.618
+anchor_bottom = 0.38
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 7
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_7"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_8" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.608
+anchor_top = 0.023
+anchor_right = 0.773
+anchor_bottom = 0.277
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_8"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_9" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.742933
+anchor_top = 0.2675
+anchor_right = 0.776933
+anchor_bottom = 0.377
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 9
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_9"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/map_container/map_container/map/area_9/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.500001
+anchor_top = 0.418605
+anchor_right = 2.21674
+anchor_bottom = 1.1876
+offset_right = -14.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_9/ColorRect/MarginContainer"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_10" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.79682
+anchor_top = 0.0275
+anchor_right = 0.882431
+anchor_bottom = 0.3135
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_10"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_11" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.891343
+anchor_top = 0.1875
+anchor_right = 1.00043
+anchor_bottom = 0.4505
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 11
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_11"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="area_12" type="MarginContainer" parent="Control/map_container/map_container/map"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.737
+anchor_top = 0.397
+anchor_right = 0.866
+anchor_bottom = 0.853
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("6_bkx2g")
+area_id = 12
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Control/map_container/map_container/map/area_12"]
+layout_mode = 2
+color = Color(0.909804, 0.811765, 0.65098, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/map_container"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 35
+
+[node name="Button" type="Button" parent="Control/map_container/MarginContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme = ExtResource("2_sk4pr")
+text = "Back To Game!"
+
+[node name="death_screen" type="MarginContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="death_rect" type="ColorRect" parent="Control/death_screen"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/death_screen"]
 layout_mode = 2
 theme_override_constants/separation = 200
 
-[node name="Control" type="Control" parent="death_screen/VBoxContainer"]
+[node name="Control" type="Control" parent="Control/death_screen/VBoxContainer"]
 layout_mode = 2
 
-[node name="death_label" type="Label" parent="death_screen/VBoxContainer"]
+[node name="death_label" type="Label" parent="Control/death_screen/VBoxContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -79,76 +698,24 @@ theme_override_colors/font_shadow_color = Color(0.999968, 0.63491, 0.579043, 1)
 theme_override_font_sizes/font_size = 32
 text = "DEAD"
 
-[node name="map_button_container" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
+[node name="audio" type="Node" parent="."]
 
-[node name="Button" type="Button" parent="map_button_container"]
-layout_mode = 2
-theme = ExtResource("2_sk4pr")
-text = "Map"
+[node name="hover" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("7_wsb5h")
+volume_db = -37.0
+autoplay = true
 
-[node name="map" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="press" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("8_g4s8q")
+volume_db = -11.0
 
-[node name="ink_diplay_container" type="MarginContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="ink_diplay_container"]
-layout_mode = 2
-
-[node name="ink_anim" type="AnimationPlayer" parent="ink_diplay_container/HBoxContainer"]
-libraries = {
-&"": SubResource("AnimationLibrary_bkx2g")
-}
-
-[node name="TextureRect" type="NinePatchRect" parent="ink_diplay_container/HBoxContainer"]
-custom_minimum_size = Vector2(26, 36)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-texture = ExtResource("3_48xfa")
-region_rect = Rect2(0, 0, 13, 18)
-
-[node name="ink_label" type="Label" parent="ink_diplay_container/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Ink: 0/10"
-
-[node name="message_container" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-grow_horizontal = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="message_container"]
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="Control" type="Control" parent="message_container/VBoxContainer"]
-layout_mode = 2
-
-[node name="message_label" type="Label" parent="message_container/VBoxContainer"]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Ink added!"
+[connection signal="mouse_entered" from="Control/map_button_container/VBoxContainer/menu_button" to="." method="_on_map_button_mouse_entered"]
+[connection signal="pressed" from="Control/map_button_container/VBoxContainer/menu_button" to="." method="_on_menu_button_pressed"]
+[connection signal="mouse_entered" from="Control/map_button_container/VBoxContainer/Button" to="." method="_on_map_button_mouse_entered"]
+[connection signal="pressed" from="Control/map_button_container/VBoxContainer/Button" to="." method="_on_map_button_pressed"]
+[connection signal="mouse_entered" from="Control/in_game_menu/NinePatchRect/Control/VBoxContainer/Back_to_main_button" to="." method="_on_map_button_mouse_entered"]
+[connection signal="pressed" from="Control/in_game_menu/NinePatchRect/Control/VBoxContainer/Back_to_main_button" to="." method="_on_back_to_main_button_pressed"]
+[connection signal="mouse_entered" from="Control/in_game_menu/NinePatchRect/Control/Container/close_menu" to="." method="_on_map_button_mouse_entered"]
+[connection signal="pressed" from="Control/in_game_menu/NinePatchRect/Control/Container/close_menu" to="." method="_on_menu_button_pressed"]
+[connection signal="mouse_entered" from="Control/map_container/MarginContainer/Button" to="." method="_on_map_button_mouse_entered"]
+[connection signal="pressed" from="Control/map_container/MarginContainer/Button" to="." method="_on_map_button_pressed"]

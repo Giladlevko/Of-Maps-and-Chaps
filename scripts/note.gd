@@ -14,13 +14,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if in_area and Input.is_action_just_pressed("interact") and !playing_timline:
 		Dialogic.start(dialog_name)
-		player.popup.hide()
+		player.popup.hide_()
 	
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		in_area = true
 		player = body
+		if Dialogic.current_timeline:
+			player.popup.hide_()
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:

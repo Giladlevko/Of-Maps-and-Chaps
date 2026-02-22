@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dftvdy44q7s0m"
+path="res://.godot/imported/Inside Day.ogg-9da78dd2d4cc611d633943850910a7bb.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sounds/Inside Day.ogg"
+dest_files=["res://.godot/imported/Inside Day.ogg-9da78dd2d4cc611d633943850910a7bb.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
