@@ -79,9 +79,9 @@ func on_died():
 	print("1")
 	death_screen.visible = true
 	var tween = self.create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC).bind_node(self)
-	tween.tween_property(death_rect,"modulate",Color(0,0,0,1),0.15)
-	tween.tween_property(death_label,"modulate",Color(1,1,1,1),0.75)
-	tween.tween_interval(1)
+	tween.tween_property(death_rect,"modulate",Color(0,0,0,1),0.4)
+	tween.tween_property(death_label,"modulate",Color(1,1,1,1),0.5)
+	tween.tween_interval(0.5)
 	SignalBus.death_finished.emit()
 	tween.tween_property(death_label,"modulate",Color(1,1,1,0),0.75)
 	tween.tween_property(death_rect,"modulate",Color(0,0,0,0),0.75)

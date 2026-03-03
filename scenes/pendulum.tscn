@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cakplpji5h5ew" path="res://scripts/pendulum.gd" id="1_5m5pe"]
 [ext_resource type="Texture2D" uid="uid://py1phhfcmy4b" path="res://assets/tiles/Tiles.png" id="1_rhq0a"]
-[ext_resource type="Texture2D" uid="uid://13jj2u5k21ag" path="res://assets/tiles/Tiles_spikes.png" id="2_5m5pe"]
 [ext_resource type="PackedScene" uid="uid://b6nsqlly3u6d3" path="res://scenes/death_zone.tscn" id="3_3437p"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p6liw"]
-size = Vector2(30, 13)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5m5pe"]
+size = Vector2(20, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3437p"]
+size = Vector2(16, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nu0j7"]
 size = Vector2(4, 110)
@@ -37,42 +39,8 @@ texture = ExtResource("1_rhq0a")
 region_enabled = true
 region_rect = Rect2(149, 73, 6, 39)
 
-[node name="spike" type="Sprite2D" parent="sprites"]
-position = Vector2(9, 24)
-rotation = 1.5708
-texture = ExtResource("2_5m5pe")
-region_enabled = true
-region_rect = Rect2(37, 160, 6, 14)
-
-[node name="spike4" type="Sprite2D" parent="sprites"]
-position = Vector2(9, 17)
-rotation = 1.5708
-texture = ExtResource("2_5m5pe")
-region_enabled = true
-region_rect = Rect2(37, 160, 6, 14)
-
-[node name="spike2" type="Sprite2D" parent="sprites"]
-position = Vector2(-9, 24)
-rotation = 4.71239
-texture = ExtResource("2_5m5pe")
-region_enabled = true
-region_rect = Rect2(37, 160, 6, 14)
-
-[node name="spike5" type="Sprite2D" parent="sprites"]
-position = Vector2(-9, 17)
-rotation = 4.71239
-texture = ExtResource("2_5m5pe")
-region_enabled = true
-region_rect = Rect2(37, 160, 6, 14)
-
-[node name="spike3" type="Sprite2D" parent="sprites"]
-position = Vector2(0, 34)
-texture = ExtResource("2_5m5pe")
-flip_v = true
-region_enabled = true
-region_rect = Rect2(37, 160, 6, 14)
-
 [node name="Sprite2D4" type="Sprite2D" parent="sprites"]
+z_index = 1
 position = Vector2(0, 21)
 texture = ExtResource("1_rhq0a")
 flip_v = true
@@ -80,13 +48,29 @@ region_enabled = true
 region_rect = Rect2(85, 112, 6, 16)
 
 [node name="death_zone" parent="sprites/Sprite2D4" instance=ExtResource("3_3437p")]
-shape = SubResource("RectangleShape2D_p6liw")
+z_index = -1
+position = Vector2(6, -0.999996)
+shape = SubResource("RectangleShape2D_5m5pe")
+Y_based = true
+spacing = 7
+
+[node name="death_zone3" parent="sprites/Sprite2D4" instance=ExtResource("3_3437p")]
+z_index = -1
+position = Vector2(-6, -0.999996)
+scale = Vector2(-1, 1)
+shape = SubResource("RectangleShape2D_5m5pe")
+Y_based = true
+spacing = 7
+dir_x = "-1"
 
 [node name="death_zone2" parent="sprites/Sprite2D4" instance=ExtResource("3_3437p")]
-position = Vector2(-3.90798e-14, 12)
-scale = Vector2(0.2, 1)
-shape = SubResource("RectangleShape2D_p6liw")
+z_index = -1
+position = Vector2(0, 9.96)
+rotation = 3.14159
+shape = SubResource("RectangleShape2D_3437p")
+dir_x = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
 position = Vector2(0, 52)
 shape = SubResource("RectangleShape2D_nu0j7")

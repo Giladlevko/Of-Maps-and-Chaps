@@ -21,6 +21,7 @@ var dash_cooldown:float = 2.0
 @onready var jump: AudioStreamPlayer2D = $sounds/jump
 @onready var dash: AudioStreamPlayer2D = $sounds/dash
 @onready var popup: TextureRect = $CanvasLayer/MarginContainer/MarginContainer/Popup
+@onready var states: StateMachine = $states
 
 
 
@@ -28,7 +29,6 @@ var dash_cooldown:float = 2.0
 var can_dash:bool = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	SignalBus.death_finished.connect(on_death_anim_finished)
 	dash_bar.max_value = dash_cooldown
 	dash_bar.value = 0
 	dash_bar.modulate = Color(1,1,1,0)
@@ -42,7 +42,6 @@ func _process(delta: float) -> void:
 	if !dead:
 		if position.y >= Y_THRESHOLD:
 			on_dead()
-	else: velocity.x = 0
 
 func on_dialog():
 	if Dialogic.current_timeline:
@@ -64,35 +63,28 @@ func _on_interact_zone_body_exited(body: Node2D) -> void:
 
 
 func _on_interact_zone_area_entered(area: Area2D) -> void:
-	if area.get_parent().is_in_group("interactable"):
-		popup.popup()
-	if area.is_in_group("check_points"):
-		last_pos = area.position
-		if !Global.reached_check_points.has(area.name):
-			SignalBus.message_popup.emit("Check-Point Reached!")
-			Global.reached_check_points.append(area.name)
-	if area.is_in_group("kills"):
-		on_dead()
-	if area.get_parent().is_in_group("wizard"):
-		can_move = false
+	if !dead:
+		if area.get_parent().is_in_group("interactable"):
+			popup.popup()
+		if area.is_in_group("check_points"):
+			last_pos = area.position
+			if !Global.reached_check_points.has(area.name):
+				SignalBus.message_popup.emit("Check-Point Reached!")
+				Global.reached_check_points.append(area.name)
+		if area.is_in_group("kills"):
+			on_dead()
+		if area.get_parent().is_in_group("wizard"):
+			can_move = false
 
 func _on_interact_zone_area_exited(area: Area2D) -> void:
 	if area.get_parent().is_in_group("interactable"):
 		popup.hide_()
 
 func on_dead():
+	states._transition_to_next_state("dead")
 	dead = true
-	SignalBus.player_died.emit()
-	
-	
 	
 
-func on_death_anim_finished():
-	await get_tree().create_timer(0.5).timeout
-	cam.position_smoothing_enabled = false
-	position = last_pos
-	dead = false
-	cam.set_deferred("position_smoothing_enabled",true)
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
@@ -100,7 +92,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		var tween = get_tree().create_tween().set_parallel(true)
 		tween.tween_property(dash_bar,"modulate",Color(1,1,1,0.25),0.2)
 		tween.tween_property(dash_bar,"value",dash_cooldown,dash_cooldown-0.1)
-		
 		tween.chain().tween_property(dash_bar,"modulate",Color(1,1,1,0),0.1)
 		await tween.finished
 		dash_bar.value = 0

@@ -24,6 +24,8 @@ func physics_update(_delta: float) -> void:
 			finished.emit("wall_jump")
 		else: 
 			owner.velocity.y += owner.gravity * _delta
+	if owner.dead:
+		finished.emit("dead")
 	owner.move_and_slide()
 
 func exit() -> void:

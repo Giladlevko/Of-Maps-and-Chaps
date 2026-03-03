@@ -4,7 +4,7 @@ var ink_amount:int = 0
 var max_ink:int = 10
 var correct_skulls: Array = []
 var skulls_can_give: bool = true
-var wall_jump_unlocked:bool = false
+var wall_jump_unlocked:bool = true
 var dash_unlocked: bool = false
 var super_dash_unlocked:bool
 var double_jump_unlocked:bool

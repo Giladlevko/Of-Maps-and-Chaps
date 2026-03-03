@@ -34,6 +34,8 @@ func physics_update(_delta: float) -> void:
 	if Input.is_action_just_pressed("dash") and (Input.is_action_pressed("left") or Input.is_action_pressed("right")):
 		if owner.can_dash and Global.dash_unlocked:
 			finished.emit("dash")
+	if owner.dead:
+		finished.emit("dead")
 	owner.move_and_slide()
 func exit() -> void:
 	pass

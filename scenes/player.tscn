@@ -1,10 +1,11 @@
-[gd_scene load_steps=51 format=3 uid="uid://v6cs0vjyj3vu"]
+[gd_scene load_steps=56 format=3 uid="uid://v6cs0vjyj3vu"]
 
 [ext_resource type="Texture2D" uid="uid://c076h0x65xeo4" path="res://assets/player_anim/die.png" id="1_qlg0r"]
 [ext_resource type="Script" uid="uid://dgur5opt3teql" path="res://scripts/player.gd" id="1_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://crg7u5i6p1v1r" path="res://assets/player_anim/dash.png" id="2_a8ls1"]
 [ext_resource type="Texture2D" uid="uid://txdewmwk8xc5" path="res://assets/player_anim/idle.png" id="2_tuyoq"]
 [ext_resource type="Texture2D" uid="uid://cc1uoxa2ksuko" path="res://assets/player_anim/jump.png" id="3_fjrip"]
+[ext_resource type="Texture2D" uid="uid://db7svn3bl5o82" path="res://assets/player_anim/dead.png" id="3_i4ail"]
 [ext_resource type="Texture2D" uid="uid://bxkrtp0i5up18" path="res://assets/player_anim/run.png" id="4_smehm"]
 [ext_resource type="Script" uid="uid://bk5wpoucvffin" path="res://scripts/state_machine.gd" id="5_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://bnd8xsqxsu8of" path="res://assets/player_anim/wall_slide.png" id="6_d2wvv"]
@@ -16,13 +17,14 @@
 [ext_resource type="Script" uid="uid://dgadmmocwtcwf" path="res://scripts/dash.gd" id="12_oprun"]
 [ext_resource type="Texture2D" uid="uid://o8cic5vxhv0a" path="res://assets/interact_popup.png" id="13_f1ej7"]
 [ext_resource type="PackedScene" uid="uid://q4awegofsse7" path="res://scenes/player_ui.tscn" id="14_f1ej7"]
+[ext_resource type="Script" uid="uid://0a46a60bx4u6" path="res://scripts/dead_state.gd" id="15_a38lo"]
 [ext_resource type="Script" uid="uid://be7v6myttvtxe" path="res://scripts/popup.gd" id="16_4r5pv"]
 [ext_resource type="AudioStream" uid="uid://c1wtbptsi0cj2" path="res://assets/sounds/Stone Jump.wav" id="17_qfm1y"]
 [ext_resource type="AudioStream" uid="uid://dtbactejw634l" path="res://assets/sounds/tap.wav" id="18_fulsm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oprun"]
-radius = 5.0
-height = 18.5
+radius = 4.5
+height = 16.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y4r1p"]
 radius = 5.0
@@ -42,6 +44,18 @@ region = Rect2(32, 0, 16, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_487ah"]
 atlas = ExtResource("2_a8ls1")
+region = Rect2(48, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bj30b"]
+atlas = ExtResource("3_i4ail")
+region = Rect2(16, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc3p3"]
+atlas = ExtResource("3_i4ail")
+region = Rect2(32, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hax0n"]
+atlas = ExtResource("3_i4ail")
 region = Rect2(48, 0, 16, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d2wvv"]
@@ -138,6 +152,20 @@ animations = [{
 "loop": false,
 "name": &"dash",
 "speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bj30b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jc3p3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hax0n")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -280,6 +308,9 @@ script = ExtResource("10_y4r1p")
 
 [node name="dash" type="Node" parent="states"]
 script = ExtResource("12_oprun")
+
+[node name="dead" type="Node" parent="states"]
+script = ExtResource("15_a38lo")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_mode = 3
