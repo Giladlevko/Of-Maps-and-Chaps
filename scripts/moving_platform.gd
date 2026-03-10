@@ -9,7 +9,7 @@ var duration: float
 @onready var collision_shape: CollisionShape2D = $Collision_shape
 @export var horizantal:bool = true
 @export var platform_id:int = 0
-
+@export var unlock_required:bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if horizantal:
@@ -22,7 +22,10 @@ func _ready() -> void:
 	if coll_shape:
 		collision_shape.shape = coll_shape
 	move_platform()
-	SignalBus.unlock_platform.connect(on_unlock_platform)
+	if unlock_required:
+		collision_shape.set_deferred("disabled",true)
+		visible = false
+		SignalBus.unlock_platform.connect(on_unlock_platform)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -41,4 +44,6 @@ func move_platform() -> void:
 func on_unlock_platform(value:int):
 	if platform_id == value:
 		visible = true
+		
+		collision_shape.set_deferred("disabled",false)
 		SignalBus.message_popup.emit("New Platform Unlocked!")

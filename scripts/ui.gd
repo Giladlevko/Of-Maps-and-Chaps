@@ -32,7 +32,7 @@ func _ready() -> void:
 	Dialogic.signal_event.connect(on_dialogic_signal)
 	menu_buttuns = [map_button,back_to_game_button,main_menu_button,close_menu_button,menu_button]
 	SignalBus.update_map.connect(on_map_update)
-	
+	SignalBus.transfer_to_scene.connect(transfer_to_scene)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -99,14 +99,16 @@ func dark_screen(value:int = 1,dur:float = 1,object:Node = death_rect):
 
 func on_dialogic_signal(arg:String):
 	if arg == "back_to_main":
-		dark_screen()
-		await screen_finished
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		transfer_to_scene("main_menu")
 	if arg == "try_again":
 		dark_screen()
 		await screen_finished
 		get_tree().reload_current_scene()
 
+func transfer_to_scene(scene_name:String):
+	dark_screen()
+	await screen_finished
+	get_tree().change_scene_to_file("res://scenes/"+scene_name+".tscn")
 
 func _on_map_button_pressed() -> void:
 	press_sfx.play()
@@ -140,6 +142,4 @@ func _on_menu_button_pressed() -> void:
 
 func _on_back_to_main_button_pressed() -> void:
 	press_sfx.play()
-	dark_screen()
-	await screen_finished
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	transfer_to_scene("main_menu")

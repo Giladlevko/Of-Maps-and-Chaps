@@ -1,0 +1,7 @@
+wizard: Are you ready for your next adventure, my peasantly Map Maker?
+- I'm Ready
+	[signal arg="transition_to_next_level"]
+	[signal arg="next_adventure"]
+- Not Yet
+	[signal arg="stay_at_rest_house_longer"]
+[end_timeline]

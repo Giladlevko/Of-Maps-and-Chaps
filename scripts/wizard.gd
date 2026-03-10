@@ -3,7 +3,6 @@ extends CharacterBody2D
 var gravity:int = 900
 var in_area:bool
 var player:CharacterBody2D
-var dialog_id:int = 1
 var dialog_playing:bool
 @export var end_position:Vector2
 # Called when the node enters the scene tree for the first time.
@@ -17,11 +16,20 @@ func _process(delta: float) -> void:
 		velocity.y += gravity*delta
 	else: velocity.y = 0
 	if in_area and Input.is_action_just_pressed("interact") and !dialog_playing:
-		Dialogic.start("Dialog_"+str(dialog_id))
-		dialog_id += 1
+		if ResourceLoader.exists("res://addons/timelines/"+"Dialog_"+Global.current_level+"_"+str(Global.current_dialog_id)+".dtl"):
+			Dialogic.start("Dialog_"+Global.current_level+"_"+str(Global.current_dialog_id))
+			Global.current_dialog_id += 1
+			
+		else:
+			Dialogic.start("next_adventure")
 		dialog_playing = true
 		player.popup.hide_()
+		
+	
 	move_and_slide()
+	
+
+
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if anim.animation == "teleport":
 		position = end_position
@@ -36,8 +44,13 @@ func on_dialog_signal(arg: String):
 	if arg == "give_ink":
 		Global.ink_amount = clamp(Global.ink_amount+10,0,Global.max_ink)
 		SignalBus.update_ink.emit()
-	
-
+	if arg == "stay_at_rest_house_longer":
+		player.can_move = true
+		dialog_playing = false
+	if arg == "next_adventure":
+		var level_id:int = int(Global.current_level.split("_")[1])+1
+		SignalBus.transfer_to_scene.emit("level_"+str(level_id))
+		Global.current_level = "level_" + str(level_id)
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		in_area = true

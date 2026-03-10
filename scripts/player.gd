@@ -35,6 +35,14 @@ func _ready() -> void:
 	popup.hide_()
 	Dialogic.timeline_started.connect(on_dialog)
 	Dialogic.timeline_ended.connect(on_dialog)
+	SignalBus.update_cam_bounds.connect(handle_cam_bounds)
+	
+
+func handle_cam_bounds(new_bounds):
+	cam.limit_left = new_bounds.x
+	cam.limit_top = new_bounds.y
+	cam.limit_right = new_bounds.z
+	cam.limit_bottom = new_bounds.w
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,7 +50,6 @@ func _process(delta: float) -> void:
 	if !dead:
 		if position.y >= Y_THRESHOLD:
 			on_dead()
-
 func on_dialog():
 	if Dialogic.current_timeline:
 		cam.position_smoothing_speed = 1
