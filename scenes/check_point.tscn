@@ -1,7 +1,57 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccrik7d0bnwj7"]
+[gd_scene load_steps=9 format=3 uid="uid://ccrik7d0bnwj7"]
+
+[ext_resource type="Texture2D" uid="uid://bsxbfgx35jhop" path="res://assets/tiles/Legacy Fantasy - Sewer Canals/Assets/Tiles.png" id="1_od5km"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3gqoq"]
 size = Vector2(20, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_klegx"]
+atlas = ExtResource("1_od5km")
+region = Rect2(80, 352, 16, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7brbk"]
+atlas = ExtResource("1_od5km")
+region = Rect2(96, 352, 16, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xx78p"]
+atlas = ExtResource("1_od5km")
+region = Rect2(112, 352, 16, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6r71g"]
+atlas = ExtResource("1_od5km")
+region = Rect2(128, 352, 16, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smfx4"]
+atlas = ExtResource("1_od5km")
+region = Rect2(144, 352, 16, 25)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bt5rj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_klegx")
+}],
+"loop": false,
+"name": &"off",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7brbk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xx78p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6r71g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smfx4")
+}],
+"loop": true,
+"name": &"on",
+"speed": 5.0
+}]
 
 [node name="check_point" type="Area2D" groups=["check_points"]]
 
@@ -9,3 +59,10 @@ size = Vector2(20, 39)
 position = Vector2(0, -9.5)
 shape = SubResource("RectangleShape2D_3gqoq")
 debug_color = Color(2.40654e-07, 0.639392, 0.365312, 0.42)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -17)
+sprite_frames = SubResource("SpriteFrames_bt5rj")
+animation = &"off"
+frame_progress = 1.0

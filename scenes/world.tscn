@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://ccn4a7oqmy5jx"]
+[gd_scene load_steps=41 format=4 uid="uid://bipefmpwcuvhc"]
 
 [ext_resource type="Script" uid="uid://dotbxthbjakjf" path="res://scripts/level_1_manager.gd" id="1_7iits"]
 [ext_resource type="PackedScene" uid="uid://v6cs0vjyj3vu" path="res://scenes/player.tscn" id="1_nnsk1"]
@@ -1381,7 +1381,7 @@ tile_map_data = PackedByteArray("AADz//7/AAACAAMAAAD0//7/AAADAAMAAAD1//7/AAACAAM
 tile_set = SubResource("TileSet_k0juu")
 
 [node name="player" parent="." instance=ExtResource("1_nnsk1")]
-position = Vector2(3448, -149)
+position = Vector2(3642, -84)
 
 [node name="wizard" parent="." instance=ExtResource("17_7t5mc")]
 position = Vector2(14, -16)
@@ -1421,27 +1421,27 @@ finish_pos = Vector2(1070, 3)
 speed = 50.0
 
 [node name="moving_platform3" parent="platforms" instance=ExtResource("3_4wyf3")]
-position = Vector2(1400, 220)
+position = Vector2(920, 220)
 start_pos = Vector2(920, 220)
 finish_pos = Vector2(1400, 220)
 speed = 50.0
 
 [node name="moving_platform4" parent="platforms" instance=ExtResource("3_4wyf3")]
-position = Vector2(1280, -130)
+position = Vector2(1280, -33)
 start_pos = Vector2(1280, -33)
 finish_pos = Vector2(1280, -100)
 speed = 50.0
 horizantal = false
 
 [node name="moving_platform5" parent="platforms" instance=ExtResource("3_4wyf3")]
-position = Vector2(1913, -297)
+position = Vector2(1913, -296.805)
 start_pos = Vector2(1913, -297)
 finish_pos = Vector2(1913, -197)
 speed = 50.0
 horizantal = false
 
 [node name="moving_platform6" parent="platforms" instance=ExtResource("3_4wyf3")]
-position = Vector2(3958, -50)
+position = Vector2(3958, -250)
 start_pos = Vector2(3958, -250)
 finish_pos = Vector2(3958, -50)
 speed = 50.0
@@ -1455,13 +1455,14 @@ speed = 50.0
 horizantal = false
 
 [node name="moving_platform8" parent="platforms" instance=ExtResource("3_4wyf3")]
-position = Vector2(3096, -14)
+position = Vector2(3378.94, -14)
 start_pos = Vector2(3096, -14)
 finish_pos = Vector2(3380, -14)
 speed = 50.0
 
 [node name="moving_platform9" parent="platforms" instance=ExtResource("3_4wyf3")]
-position = Vector2(3780, -50)
+visible = false
+position = Vector2(3770, -50)
 start_pos = Vector2(3770, -50)
 finish_pos = Vector2(3870, -50)
 speed = 25.0
@@ -1602,6 +1603,7 @@ ability_type = "Dash"
 position = Vector2(1382, -368)
 shape = SubResource("RectangleShape2D_oo54l")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone2" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(1418, -304)
@@ -1609,11 +1611,13 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_jhx03")
 Y_based = true
 dir_x = "-1"
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone3" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(1382, -232)
 shape = SubResource("RectangleShape2D_7iits")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone4" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(1322, -224)
@@ -1621,56 +1625,67 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_jhx03")
 Y_based = true
 dir_x = "-1"
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone5" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3528, -294)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_2lf6f")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone6" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3688, -294)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_2lf6f")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone7" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3688, -358)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_kpybi")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone8" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3528, -358)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_kpybi")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone9" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3464, 250)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_ctatt")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone10" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3328, 186)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_xgqkh")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone11" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3350, 208)
 shape = SubResource("RectangleShape2D_munwf")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone12" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3254, 224)
 shape = SubResource("RectangleShape2D_ts3gi")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone19" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3510, -96)
 shape = SubResource("RectangleShape2D_ts3gi")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone17" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3590, 80)
 shape = SubResource("RectangleShape2D_luhhm")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone18" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3626, 80)
@@ -1678,6 +1693,7 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_luhhm")
 Y_based = true
 dir_x = "-1"
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone13" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3194, 216)
@@ -1685,21 +1701,25 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_0nbtd")
 Y_based = true
 dir_x = "-1"
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone14" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3160, 250)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_37qwj")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone15" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3016, 186)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_37qwj")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone16" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3030, 248)
 shape = SubResource("RectangleShape2D_navra")
 Y_based = true
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone20" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3354, -176)
@@ -1707,11 +1727,13 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_fh13f")
 Y_based = true
 dir_x = "-1"
+kill_shape_offset = Vector2(0, 0)
 
 [node name="death_zone21" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3296, -150)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_rup4s")
+kill_shape_offset = Vector2(0, 0)
 
 [node name="chests" type="Node" parent="."]
 

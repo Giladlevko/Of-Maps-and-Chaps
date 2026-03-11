@@ -1,15 +1,17 @@
+@tool
 extends AnimatableBody2D
 @export var start_pos:Vector2 = Vector2(0,0)
 @export var finish_pos:Vector2 = Vector2(100,0)
 @export var speed: float = 5
 var duration: float
-@export var plat_tex: Texture
+@export var plat_tex: AtlasTexture
 @export var coll_shape: Shape2D
 @onready var sprite: Sprite2D = $Sprite
 @onready var collision_shape: CollisionShape2D = $Collision_shape
 @export var horizantal:bool = true
 @export var platform_id:int = 0
 @export var unlock_required:bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if horizantal:
@@ -17,11 +19,10 @@ func _ready() -> void:
 	else:
 		duration = abs((finish_pos.y - start_pos.y)/speed)
 	
-	if plat_tex:
-		sprite.texture = plat_tex
-	if coll_shape:
-		collision_shape.shape = coll_shape
-	move_platform()
+	if plat_tex and coll_shape:
+		update_platform()
+	if !Engine.is_editor_hint():
+		move_platform()
 	if unlock_required:
 		collision_shape.set_deferred("disabled",true)
 		visible = false
@@ -31,6 +32,11 @@ func _process(delta: float) -> void:
 	pass
 	
 
+
+func update_platform():
+	sprite.texture = plat_tex.atlas
+	sprite.region_rect = plat_tex.region
+	collision_shape.shape = coll_shape
 
 func move_platform() -> void:
 	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD).bind_node(self)
