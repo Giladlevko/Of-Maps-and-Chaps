@@ -9,7 +9,7 @@
 script = ExtResource("1_orvjg")
 shape = SubResource("RectangleShape2D_f04b3")
 damage_object_scene = ExtResource("2_f04b3")
-kill_shape_offset = null
+collision_offset = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_f04b3")

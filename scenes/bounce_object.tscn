@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdqt3r2lsrque"]
+
+[ext_resource type="Script" uid="uid://cbm56e1nog0nf" path="res://scripts/bounce_object.gd" id="1_06vja"]
+[ext_resource type="Texture2D" uid="uid://bsxbfgx35jhop" path="res://assets/tiles/Legacy Fantasy - Sewer Canals/Assets/Tiles.png" id="1_87oda"]
+
+[sub_resource type="Curve" id="Curve_06vja"]
+_data = [Vector2(0.0227273, 1), 0.0, 0.0, 0, 0, Vector2(0.982955, 0.426966), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_06vja"]
+offsets = PackedFloat32Array(0, 0.72, 1)
+colors = PackedColorArray(0.177083, 0.194053, 0.0109419, 1, 0.87451, 0.945098, 0.282353, 1, 0.87451, 0.945098, 0.282353, 0)
+
+[node name="bounce_area" type="Area2D"]
+script = ExtResource("1_06vja")
+
+[node name="sprites" type="Node2D" parent="."]
+position = Vector2(0, -4)
+
+[node name="Sprite2D" type="Sprite2D" parent="sprites"]
+texture = ExtResource("1_87oda")
+region_enabled = true
+region_rect = Rect2(176, 151, 30, 9)
+
+[node name="Sprite2D2" type="Sprite2D" parent="sprites"]
+position = Vector2(0, 9)
+texture = ExtResource("1_87oda")
+flip_v = true
+region_enabled = true
+region_rect = Rect2(176, 151, 30, 9)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="sprites"]
+position = Vector2(0, 3)
+rotation = -1.5708
+amount = 16
+lifetime = 0.51
+emission_shape = 1
+emission_sphere_radius = 10.0
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 25.0
+scale_amount_curve = SubResource("Curve_06vja")
+color_ramp = SubResource("Gradient_06vja")
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(15, 0, 0, -8, -15, 0, 0, 8)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

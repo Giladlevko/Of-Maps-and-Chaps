@@ -52,9 +52,8 @@ z_index = -1
 position = Vector2(6, -0.999996)
 shape = SubResource("RectangleShape2D_5m5pe")
 Y_based = true
-turn_if_y_based = null
 spacing = 7
-kill_shape_offset = null
+collision_offset = null
 
 [node name="death_zone3" parent="sprites/Sprite2D4" instance=ExtResource("3_3437p")]
 z_index = -1
@@ -62,19 +61,17 @@ position = Vector2(-6, -0.999996)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_5m5pe")
 Y_based = true
-turn_if_y_based = null
 spacing = 7
 dir_x = "-1"
-kill_shape_offset = null
+collision_offset = null
 
 [node name="death_zone2" parent="sprites/Sprite2D4" instance=ExtResource("3_3437p")]
 z_index = -1
 position = Vector2(0, 9.96)
 rotation = 3.14159
 shape = SubResource("RectangleShape2D_3437p")
-turn_if_y_based = null
 dir_x = null
-kill_shape_offset = null
+collision_offset = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1
