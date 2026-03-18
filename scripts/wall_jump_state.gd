@@ -1,10 +1,11 @@
 extends State
 var look_dir_x: int = 1
-var changed_gravity:bool
+var pause_fall:bool
 func enter(previous_state_path: String, data := {}) -> void:
 	owner.anim.play("wall_slide")
 	owner.velocity.y = 0
 	owner.velocity.x = 0
+	handle_last_state(previous_state_path)
 
 
 func update(_delta: float) -> void:
@@ -22,14 +23,19 @@ func update(_delta: float) -> void:
 	if !owner.is_on_floor() and owner.velocity.y > 0 and owner.is_on_wall() and owner.velocity.x != 0:
 		look_dir_x = sign(owner.velocity.x)
 		owner.wall_contact_coyote = owner.wall_contact_coyote_time
-		owner.velocity.y += owner.gravity_wall * _delta
+		owner.velocity.y = owner.gravity_wall
+		if pause_fall and !Input.is_anything_pressed():
+			owner.velocity.y = 0
+		else: pause_fall = false
 		owner.anim.play("wall_slide")
-		if !changed_gravity:
-			changed_gravity = true
-			_on_animated_sprite_2d_animation_changed()
 	else:
 		owner.wall_contact_coyote -= _delta
 		owner.velocity.y += owner.gravity * _delta
+		if pause_fall and !Input.is_anything_pressed():
+			owner.velocity.y = 0
+		else: pause_fall = false
+		if !owner.is_on_wall() and !(Input.is_action_pressed("left") and Input.is_action_pressed("right")):
+			owner.anim.play("idle")
 	if owner.wall_contact_coyote > 0.0:
 		if Input.is_action_just_pressed("jump"):
 			owner.anim.play("jump")
@@ -47,11 +53,16 @@ func update(_delta: float) -> void:
 			finished.emit("dash")
 	if owner.dead:
 		finished.emit("dead")
+	
+
+
+func handle_last_state(last_state:String):
+	if last_state == "super_dash":
+		pause_fall = true
+		print("fall_paused")
+		await get_tree().create_timer(0.5).timeout
+		pause_fall = false
+	
+
 func exit() -> void:
 	pass
-
-
-func _on_animated_sprite_2d_animation_changed() -> void:
-	if owner.anim.animation == "wall_slide":
-		owner.velocity.y = 0
-		changed_gravity = false

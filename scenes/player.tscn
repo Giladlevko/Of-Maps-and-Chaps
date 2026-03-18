@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://v6cs0vjyj3vu"]
+[gd_scene load_steps=60 format=3 uid="uid://v6cs0vjyj3vu"]
 
 [ext_resource type="Texture2D" uid="uid://c076h0x65xeo4" path="res://assets/player_anim/die.png" id="1_qlg0r"]
 [ext_resource type="Script" uid="uid://dgur5opt3teql" path="res://scripts/player.gd" id="1_ur7pv"]
@@ -19,6 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://q4awegofsse7" path="res://scenes/player_ui.tscn" id="14_f1ej7"]
 [ext_resource type="Script" uid="uid://0a46a60bx4u6" path="res://scripts/dead_state.gd" id="15_a38lo"]
 [ext_resource type="Script" uid="uid://be7v6myttvtxe" path="res://scripts/popup.gd" id="16_4r5pv"]
+[ext_resource type="Script" uid="uid://d0vocvmwdk8ee" path="res://scripts/charge_super_dash.gd" id="16_a38lo"]
+[ext_resource type="Script" uid="uid://cnwriyir51keb" path="res://scripts/super_dash.gd" id="17_4ni07"]
 [ext_resource type="AudioStream" uid="uid://c1wtbptsi0cj2" path="res://assets/sounds/Stone Jump.wav" id="17_qfm1y"]
 [ext_resource type="AudioStream" uid="uid://dtbactejw634l" path="res://assets/sounds/tap.wav" id="18_fulsm"]
 
@@ -256,6 +258,12 @@ bg_color = Color(0.470076, 0.470076, 0.470076, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfm1y"]
 bg_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a38lo"]
+bg_color = Color(0.473976, 0.473976, 0.473976, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ni07"]
+bg_color = Color(0.262745, 0.87451, 1, 1)
+
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fulsm"]
 random_pitch = 1.2
 streams_count = 1
@@ -312,6 +320,12 @@ script = ExtResource("12_oprun")
 [node name="dead" type="Node" parent="states"]
 script = ExtResource("15_a38lo")
 
+[node name="charge_super_dash" type="Node" parent="states"]
+script = ExtResource("16_a38lo")
+
+[node name="super_dash" type="Node" parent="states"]
+script = ExtResource("17_4ni07")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 process_mode = 3
 offset = Vector2(0, -30)
@@ -350,13 +364,29 @@ theme = ExtResource("12_jej6c")
 texture = ExtResource("13_f1ej7")
 script = ExtResource("16_4r5pv")
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer"]
+[node name="dash_Bar" type="ProgressBar" parent="CanvasLayer/MarginContainer"]
 modulate = Color(1, 1, 1, 0.313726)
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_a8ls1")
 theme_override_styles/fill = SubResource("StyleBoxFlat_qfm1y")
 max_value = 2.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="super_dash_container" type="MarginContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = -18
+theme_override_constants/margin_bottom = -22
+
+[node name="super_dash_Bar" type="ProgressBar" parent="CanvasLayer/MarginContainer/super_dash_container"]
+modulate = Color(1, 1, 1, 0.313726)
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_a38lo")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4ni07")
+max_value = 3.0
 step = 0.001
 value = 1.0
 show_percentage = false

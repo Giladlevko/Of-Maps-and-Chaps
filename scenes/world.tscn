@@ -1603,8 +1603,6 @@ ability_type = "Dash"
 position = Vector2(1382, -368)
 shape = SubResource("RectangleShape2D_oo54l")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone2" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(1418, -304)
@@ -1612,15 +1610,11 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_jhx03")
 Y_based = true
 dir_x = "-1"
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone3" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(1382, -232)
 shape = SubResource("RectangleShape2D_7iits")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone4" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(1322, -224)
@@ -1628,78 +1622,56 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_jhx03")
 Y_based = true
 dir_x = "-1"
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone5" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3528, -294)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_2lf6f")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone6" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3688, -294)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_2lf6f")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone7" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3688, -358)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_kpybi")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone8" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3528, -358)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_kpybi")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone9" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3464, 250)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_ctatt")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone10" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3328, 186)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_xgqkh")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone11" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3350, 208)
 shape = SubResource("RectangleShape2D_munwf")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone12" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3254, 224)
 shape = SubResource("RectangleShape2D_ts3gi")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone19" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3510, -96)
 shape = SubResource("RectangleShape2D_ts3gi")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone17" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3590, 80)
 shape = SubResource("RectangleShape2D_luhhm")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone18" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3626, 80)
@@ -1707,8 +1679,6 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_luhhm")
 Y_based = true
 dir_x = "-1"
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone13" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3194, 216)
@@ -1716,29 +1686,21 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_0nbtd")
 Y_based = true
 dir_x = "-1"
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone14" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3160, 250)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_37qwj")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone15" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3016, 186)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_37qwj")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone16" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3030, 248)
 shape = SubResource("RectangleShape2D_navra")
 Y_based = true
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone20" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3354, -176)
@@ -1746,15 +1708,11 @@ scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_fh13f")
 Y_based = true
 dir_x = "-1"
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="death_zone21" parent="dead_zones" instance=ExtResource("12_q5onr")]
 position = Vector2(3296, -150)
 scale = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_rup4s")
-kill_shape_offset = Vector2(0, 0)
-collision_offset = null
 
 [node name="chests" type="Node" parent="."]
 

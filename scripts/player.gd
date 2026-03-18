@@ -4,7 +4,7 @@ class_name Player
 var gravity:int = 900
 var speed_x:int = 100
 var speed_y:int = -200
-var gravity_wall:int = 20
+var gravity_wall:int = 8
 var wall_push_force: int = 200
 var wall_contact_coyote:float = 0.0
 var wall_jump_lock: float = 0.0
@@ -15,13 +15,15 @@ var dead:bool
 var can_move:bool = true
 const Y_THRESHOLD:int = 1000
 @onready var cam: Camera2D = $Camera2D
-@onready var dash_bar: ProgressBar = $CanvasLayer/MarginContainer/ProgressBar
+@onready var dash_bar: ProgressBar = $CanvasLayer/MarginContainer/dash_Bar
 var dash_cooldown:float = 2.0
 @onready var run: AudioStreamPlayer2D = $sounds/run
 @onready var jump: AudioStreamPlayer2D = $sounds/jump
 @onready var dash: AudioStreamPlayer2D = $sounds/dash
 @onready var popup: TextureRect = $CanvasLayer/MarginContainer/MarginContainer/Popup
 @onready var states: StateMachine = $states
+@onready var super_dash_bar: ProgressBar = $CanvasLayer/MarginContainer/super_dash_container/super_dash_Bar
+var last_dir:int = 1
 
 
 
@@ -29,14 +31,19 @@ var dash_cooldown:float = 2.0
 var can_dash:bool = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	dash_bar.max_value = dash_cooldown
-	dash_bar.value = 0
-	dash_bar.modulate = Color(1,1,1,0)
+	reset_bar(dash_bar)
+	reset_bar(super_dash_bar)
 	popup.hide_()
 	Dialogic.timeline_started.connect(on_dialog)
 	Dialogic.timeline_ended.connect(on_dialog)
 	SignalBus.update_cam_bounds.connect(handle_cam_bounds)
 	
+
+func reset_bar(bar:ProgressBar):
+	dash_bar.max_value = dash_cooldown
+	bar.value = 0
+	bar.modulate = Color(1,1,1,0)
+	print("bar reset")
 
 func handle_cam_bounds(new_bounds):
 	cam.limit_left = new_bounds.x
@@ -50,6 +57,15 @@ func _process(delta: float) -> void:
 	if !dead:
 		if position.y >= Y_THRESHOLD:
 			on_dead()
+	
+	if Input.is_action_just_pressed("left"):
+		last_dir = -1
+	elif Input.is_action_just_pressed("right"):
+		last_dir = 1
+	
+
+
+
 func on_dialog():
 	if Dialogic.current_timeline:
 		cam.position_smoothing_speed = 1

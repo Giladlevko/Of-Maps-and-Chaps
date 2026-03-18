@@ -1,9 +1,12 @@
 extends State
 var cam_up_pos:Vector2 = Vector2(0,-30)
-var cam_down_pos:Vector2 = Vector2(0,30)
+var cam_down_pos:Vector2 = Vector2(0,50)
 var cam_base_pos:Vector2 = Vector2(0,0)
+
+
 func enter(previous_state_path: String, data := {}) -> void:
 	owner.anim.play("idle")
+
 
 func physics_update(_delta: float) -> void:
 	owner.anim.play("idle")
@@ -28,13 +31,17 @@ func physics_update(_delta: float) -> void:
 		owner.velocity.x = 0
 	if owner.dead:
 		finished.emit("dead")
-	if Input.is_action_just_pressed("UP"):
-		owner.cam.position = cam_up_pos
-	elif Input.is_action_just_pressed("DOWN"):
-		owner.cam.position = cam_down_pos
-	elif Input.is_action_just_released("DOWN") or Input.is_action_just_released("UP"):
+	if owner.is_on_floor():
+		if Input.is_action_just_pressed("UP"):
+			owner.cam.position = cam_up_pos
+		elif Input.is_action_just_pressed("DOWN"):
+			owner.cam.position = cam_down_pos
+	if Input.is_action_just_released("DOWN") or Input.is_action_just_released("UP"):
 		owner.cam.position = cam_base_pos
+	if Input.is_action_just_pressed("super_dash") and owner.is_on_floor():
+		finished.emit("charge_super_dash")
 	owner.move_and_slide()
+
 
 func exit() -> void:
 	owner.cam.position = cam_base_pos

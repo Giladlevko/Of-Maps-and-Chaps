@@ -13,12 +13,13 @@ func _ready() -> void:
 
 
 func update_spike_object(tex:AtlasTexture,col_shape:Shape2D,kill_shape:Shape2D,kill_zone_offset:Vector2,collosion_offset:Vector2):
-	sprite.texture = tex.atlas
-	sprite.region_rect = tex.region
-	collision_shape.shape = col_shape
-	Kill_zone_shape.shape = kill_shape
-	Kill_zone_shape.position = kill_zone_offset
-	collision_shape.position = collosion_offset
+	if tex:
+		sprite.texture = tex.atlas
+		sprite.region_rect = tex.region
+		collision_shape.shape = col_shape
+		Kill_zone_shape.shape = kill_shape
+		Kill_zone_shape.position = kill_zone_offset
+		collision_shape.position = collosion_offset
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
