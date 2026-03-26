@@ -36,6 +36,7 @@ directories/dtl_directory={
 "Dialog_level_1_1": "res://addons/timelines/Dialog_level_1_1.dtl",
 "Dialog_level_1_2": "res://addons/timelines/Dialog_level_1_2.dtl",
 "Dialog_level_1_3": "res://addons/timelines/Dialog_level_1_3.dtl",
+"moon_to_stars": "res://addons/timelines/moon_to_stars.dtl",
 "next_adventure": "res://addons/timelines/next_adventure.dtl",
 "tree_poem": "res://addons/timelines/tree_poem.dtl"
 }

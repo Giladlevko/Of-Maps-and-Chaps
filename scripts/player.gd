@@ -24,6 +24,8 @@ var dash_cooldown:float = 2.0
 @onready var states: StateMachine = $states
 @onready var super_dash_bar: ProgressBar = $CanvasLayer/MarginContainer/super_dash_container/super_dash_Bar
 var last_dir:int = 1
+@onready var dash_charge_particles: CPUParticles2D = $dash_charge_particles
+@onready var super_dash_particles: CPUParticles2D = $super_dash_particles
 
 
 
@@ -31,13 +33,16 @@ var last_dir:int = 1
 var can_dash:bool = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	dash_charge_particles.emitting = false
+	super_dash_particles.emitting = false
 	reset_bar(dash_bar)
 	reset_bar(super_dash_bar)
+	super_dash_bar.get_theme_stylebox("fill").border_color = Color(0.263, 0.875, 1.0)
 	popup.hide_()
 	Dialogic.timeline_started.connect(on_dialog)
 	Dialogic.timeline_ended.connect(on_dialog)
 	SignalBus.update_cam_bounds.connect(handle_cam_bounds)
-	
+	last_pos = position
 
 func reset_bar(bar:ProgressBar):
 	dash_bar.max_value = dash_cooldown

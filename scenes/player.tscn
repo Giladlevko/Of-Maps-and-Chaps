@@ -1,8 +1,9 @@
-[gd_scene load_steps=60 format=3 uid="uid://v6cs0vjyj3vu"]
+[gd_scene load_steps=69 format=3 uid="uid://v6cs0vjyj3vu"]
 
 [ext_resource type="Texture2D" uid="uid://c076h0x65xeo4" path="res://assets/player_anim/die.png" id="1_qlg0r"]
 [ext_resource type="Script" uid="uid://dgur5opt3teql" path="res://scripts/player.gd" id="1_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://crg7u5i6p1v1r" path="res://assets/player_anim/dash.png" id="2_a8ls1"]
+[ext_resource type="Texture2D" uid="uid://k2b4r6wehiy6" path="res://assets/player_anim/charge_super_dash.png" id="2_ke2ow"]
 [ext_resource type="Texture2D" uid="uid://txdewmwk8xc5" path="res://assets/player_anim/idle.png" id="2_tuyoq"]
 [ext_resource type="Texture2D" uid="uid://cc1uoxa2ksuko" path="res://assets/player_anim/jump.png" id="3_fjrip"]
 [ext_resource type="Texture2D" uid="uid://db7svn3bl5o82" path="res://assets/player_anim/dead.png" id="3_i4ail"]
@@ -12,6 +13,7 @@
 [ext_resource type="Script" uid="uid://l7koa4hwlujq" path="res://scripts/idle_state.gd" id="7_y4r1p"]
 [ext_resource type="Script" uid="uid://l1y24mnx4icb" path="res://scripts/run_state.gd" id="8_d2wvv"]
 [ext_resource type="Script" uid="uid://dlw2jpp1px70u" path="res://scripts/jump_state.gd" id="9_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://dvtah18gelxm7" path="res://assets/player_anim/super_dash.png" id="9_ujl30"]
 [ext_resource type="Script" uid="uid://dkcpxw5wjhayt" path="res://scripts/wall_jump_state.gd" id="10_y4r1p"]
 [ext_resource type="Theme" uid="uid://cbwouf86hnij0" path="res://themes/UI_theme.tres" id="12_jej6c"]
 [ext_resource type="Script" uid="uid://dgadmmocwtcwf" path="res://scripts/dash.gd" id="12_oprun"]
@@ -23,6 +25,7 @@
 [ext_resource type="Script" uid="uid://cnwriyir51keb" path="res://scripts/super_dash.gd" id="17_4ni07"]
 [ext_resource type="AudioStream" uid="uid://c1wtbptsi0cj2" path="res://assets/sounds/Stone Jump.wav" id="17_qfm1y"]
 [ext_resource type="AudioStream" uid="uid://dtbactejw634l" path="res://assets/sounds/tap.wav" id="18_fulsm"]
+[ext_resource type="Script" uid="uid://cdh148f1mi6ar" path="res://scripts/camera_manager.gd" id="18_l71n6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oprun"]
 radius = 4.5
@@ -132,12 +135,36 @@ region = Rect2(32, 0, 16, 24)
 atlas = ExtResource("4_smehm")
 region = Rect2(48, 0, 16, 24)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_md1ol"]
+atlas = ExtResource("9_ujl30")
+region = Rect2(0, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4otl"]
+atlas = ExtResource("9_ujl30")
+region = Rect2(16, 0, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j2b1d"]
+atlas = ExtResource("9_ujl30")
+region = Rect2(0, 24, 16, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cs1tg"]
+atlas = ExtResource("9_ujl30")
+region = Rect2(16, 24, 16, 24)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_dt7fs"]
 atlas = ExtResource("6_d2wvv")
 region = Rect2(0, 0, 16, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dt7fs"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ke2ow")
+}],
+"loop": true,
+"name": &"charge_super_dash",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wqfne")
@@ -245,6 +272,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_md1ol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4otl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j2b1d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cs1tg")
+}],
+"loop": true,
+"name": &"super_dash",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_dt7fs")
 }],
 "loop": true,
@@ -263,6 +307,14 @@ bg_color = Color(0.473976, 0.473976, 0.473976, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ni07"]
 bg_color = Color(0.262745, 0.87451, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.262745, 0.87451, 1, 1)
+border_blend = true
+anti_aliasing = false
+anti_aliasing_size = 10.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fulsm"]
 random_pitch = 1.2
@@ -278,6 +330,14 @@ stream_0/stream = ExtResource("18_fulsm")
 random_pitch = 1.2
 streams_count = 1
 stream_0/stream = ExtResource("17_qfm1y")
+
+[sub_resource type="Curve" id="Curve_ke2ow"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ujl30"]
+offsets = PackedFloat32Array(0, 0.26)
+colors = PackedColorArray(0.67451, 0.756863, 0.894118, 1, 0.545098, 0.690196, 0.678431, 1)
 
 [node name="player" type="CharacterBody2D"]
 z_index = 1
@@ -333,6 +393,7 @@ zoom = Vector2(4, 4)
 limit_bottom = 350
 limit_smoothed = true
 position_smoothing_enabled = true
+script = ExtResource("18_l71n6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 0
@@ -408,6 +469,42 @@ volume_db = -40.0
 stream = SubResource("AudioStreamRandomizer_60mlk")
 volume_db = -15.0
 pitch_scale = 5.0
+
+[node name="dash_charge_particles" type="CPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(0, 3)
+rotation = -1.5708
+emitting = false
+amount = 32
+lifetime = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(8, 8)
+spread = 5.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+linear_accel_min = 200.0
+linear_accel_max = 200.0
+scale_amount_curve = SubResource("Curve_ke2ow")
+color_ramp = SubResource("Gradient_ujl30")
+
+[node name="super_dash_particles" type="CPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(-4, 2)
+scale = Vector2(-1, 1)
+emitting = false
+amount = 64
+lifetime = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(8, 8)
+spread = 30.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+linear_accel_min = 200.0
+linear_accel_max = 200.0
+scale_amount_curve = SubResource("Curve_ke2ow")
+color_ramp = SubResource("Gradient_ujl30")
 
 [connection signal="area_entered" from="interact_zone" to="." method="_on_interact_zone_area_entered"]
 [connection signal="area_exited" from="interact_zone" to="." method="_on_interact_zone_area_exited"]

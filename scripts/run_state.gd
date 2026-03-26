@@ -34,6 +34,8 @@ func physics_update(_delta: float) -> void:
 			finished.emit("dash")
 	if owner.dead:
 		finished.emit("dead")
+	if Input.is_action_just_pressed("super_dash"):
+		finished.emit("charge_super_dash")
 	owner.move_and_slide()
 
 func exit() -> void:

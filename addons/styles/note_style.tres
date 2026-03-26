@@ -40,7 +40,8 @@ scene = ExtResource("6_fs35t")
 overrides = {
 "autoadvance_progressbar": "false",
 "next_indicator_show_on_autoadvance": "true",
-"next_indicator_texture": "\"res://assets/interact_popup.png\""
+"next_indicator_texture": "\"res://assets/interact_popup.png\"",
+"typing_sounds_enabled": "false"
 }
 
 [sub_resource type="Resource" id="Resource_3ks1y"]

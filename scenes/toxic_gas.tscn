@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://dory4n6alh061"]
+
+[ext_resource type="Script" uid="uid://78tk0cvcl1q4" path="res://scripts/toxic_gas.gd" id="1_54743"]
+[ext_resource type="Texture2D" uid="uid://bk8quaoodc2lc" path="res://assets/tiles/Legacy Fantasy - Sewer Canals/Assets/Props.png" id="1_kn6p1"]
+[ext_resource type="Shader" uid="uid://xak7jm2jxv6i" path="res://scripts/toxic_gas.gdshader" id="2_f2kaj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ibau8"]
+shader = ExtResource("2_f2kaj")
+shader_parameter/noise = 0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f2kaj"]
+radius = 0.0
+
+[sub_resource type="Gradient" id="Gradient_f2kaj"]
+offsets = PackedFloat32Array(0, 0.376623, 0.746753, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.14902, 0.92549, 0.92549, 0.92549, 0.294118, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ibau8"]
+gradient = SubResource("Gradient_f2kaj")
+width = 4
+height = 4
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_dfcaq"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 1.62921), 0.0, 0.0, 0, 0, Vector2(0.721591, 5), -0.486277, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_aemuj"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.326667, 0.54, 1)
+colors = PackedColorArray(0, 0.254902, 0, 0.392157, 0.537255, 1, 0.505882, 0.192157, 4.57242e-07, 0.312189, 0.00468418, 0.341507, 0, 0.807843, 0, 0.784314)
+
+[node name="toxic_gas" type="Area2D" groups=["kills"]]
+script = ExtResource("1_54743")
+radius = 24.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ibau8")
+texture = ExtResource("1_kn6p1")
+region_enabled = true
+region_rect = Rect2(48, 192, 48, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f2kaj")
+disabled = true
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 96
+texture = SubResource("GradientTexture2D_ibau8")
+speed_scale = 0.5
+emission_shape = 1
+emission_sphere_radius = 0.01
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+scale_amount_curve = SubResource("Curve_dfcaq")
+color_ramp = SubResource("Gradient_aemuj")

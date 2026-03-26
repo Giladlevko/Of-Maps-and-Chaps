@@ -24,6 +24,8 @@ func update(_delta: float) -> void:
 		look_dir_x = sign(owner.velocity.x)
 		owner.wall_contact_coyote = owner.wall_contact_coyote_time
 		owner.velocity.y = owner.gravity_wall
+		if Input.is_action_just_pressed("super_dash"):
+			finished.emit("charge_super_dash")
 		if pause_fall and !Input.is_anything_pressed():
 			owner.velocity.y = 0
 		else: pause_fall = false
@@ -33,7 +35,11 @@ func update(_delta: float) -> void:
 		owner.velocity.y += owner.gravity * _delta
 		if pause_fall and !Input.is_anything_pressed():
 			owner.velocity.y = 0
-		else: pause_fall = false
+			#wheight,shake_end,shake_fade,shake_start
+			
+		else: 
+			pause_fall = false
+			
 		if !owner.is_on_wall() and !(Input.is_action_pressed("left") and Input.is_action_pressed("right")):
 			owner.anim.play("idle")
 	if owner.wall_contact_coyote > 0.0:
@@ -59,6 +65,7 @@ func update(_delta: float) -> void:
 func handle_last_state(last_state:String):
 	if last_state == "super_dash":
 		pause_fall = true
+		owner.cam.shake_cam(30)
 		print("fall_paused")
 		await get_tree().create_timer(0.5).timeout
 		pause_fall = false
