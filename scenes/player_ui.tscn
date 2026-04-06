@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://q4awegofsse7"]
+[gd_scene load_steps=19 format=3 uid="uid://q4awegofsse7"]
 
 [ext_resource type="Script" uid="uid://bry0xo81di5qg" path="res://scripts/ui.gd" id="1_jkj6h"]
 [ext_resource type="Theme" uid="uid://cbwouf86hnij0" path="res://themes/UI_theme.tres" id="2_sk4pr"]
 [ext_resource type="Texture2D" uid="uid://k7ffod7v8p0w" path="res://assets/map.png" id="3_8isll"]
 [ext_resource type="Texture2D" uid="uid://bnar4jb3ugwf8" path="res://assets/ink_drop.png" id="3_48xfa"]
 [ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/Sprite sheet for Basic Pack.png" id="4_7ctsh"]
+[ext_resource type="Script" uid="uid://c7bokvhb3f28q" path="res://scripts/map_background.gd" id="5_g4s8q"]
 [ext_resource type="Script" uid="uid://bj24co5l7ll6" path="res://scripts/map_areas.gd" id="6_bkx2g"]
 [ext_resource type="AudioStream" uid="uid://clahnhvopbk6b" path="res://assets/sounds/hover-button-287656.mp3" id="7_wsb5h"]
 [ext_resource type="AudioStream" uid="uid://dpn2k2ho1ckts" path="res://assets/sounds/click-buttons-ui-menu-sounds-effects-button-2-203594.mp3" id="8_g4s8q"]
@@ -127,7 +128,7 @@ region_rect = Rect2(869, 102, 22, 22)
 texture = ExtResource("4_7ctsh")
 region_rect = Rect2(837, 100, 22, 24)
 
-[node name="UI" type="Control" node_paths=PackedStringArray("ink_label", "ink_anim", "map", "map_container", "message_label", "death_rect", "death_label", "map_button", "back_to_game_button", "death_screen", "close_menu_button", "main_menu_button", "menu_button", "menu_anim", "in_game_menu", "press_sfx", "hover_sfx")]
+[node name="UI" type="Control" node_paths=PackedStringArray("ink_label", "ink_anim", "map", "map_container", "message_label", "death_rect", "death_label", "map_button", "back_to_game_button", "death_screen", "close_menu_button", "main_menu_button", "menu_button", "menu_anim", "in_game_menu", "press_sfx", "hover_sfx", "map_background")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -153,6 +154,7 @@ menu_anim = NodePath("Control/in_game_menu/NinePatchRect/AnimationPlayer")
 in_game_menu = NodePath("Control/in_game_menu")
 press_sfx = NodePath("audio/press")
 hover_sfx = NodePath("audio/hover")
+map_background = NodePath("Control/map_container/background/map_background")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
@@ -375,12 +377,22 @@ patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 5
 
+[node name="map_background" type="Control" parent="Control/map_container/background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_g4s8q")
+
 [node name="map_container" type="MarginContainer" parent="Control/map_container"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
 
 [node name="map" type="NinePatchRect" parent="Control/map_container/map_container"]
+visible = false
 custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 size_flags_vertical = 4

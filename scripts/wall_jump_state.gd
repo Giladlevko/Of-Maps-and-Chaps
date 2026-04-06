@@ -35,7 +35,7 @@ func update(_delta: float) -> void:
 		owner.velocity.y += owner.gravity * _delta
 		if pause_fall and !Input.is_anything_pressed():
 			owner.velocity.y = 0
-			#wheight,shake_end,shake_fade,shake_start
+			#weight,shake_end,shake_fade,shake_start
 			
 		else: 
 			pause_fall = false

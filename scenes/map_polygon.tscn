@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://4ie5nfj37beu"]
+
+[ext_resource type="Script" uid="uid://dwt0jx1fdyblg" path="res://scripts/map_polygon.gd" id="1_u6gms"]
+
+[node name="map_polygon" type="Polygon2D"]
+color = Color(0, 1, 1, 0.117647)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -2, 1, -2, -2, -1, -2)
+script = ExtResource("1_u6gms")

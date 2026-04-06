@@ -3,7 +3,8 @@ signal update_ink
 signal message_popup(message:String)
 signal player_died
 signal death_finished
-signal update_map(id:int)
+signal get_map_poly_points(id:int)
+signal update_map(poly_points:PackedVector2Array,id:int)
 signal unlock_platform
 signal update_cam_bounds
 signal transfer_to_scene()

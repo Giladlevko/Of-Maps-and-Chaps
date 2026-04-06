@@ -40,7 +40,7 @@ func handle_map_update():
 		if Global.ink_amount >= ink_cost:
 			Global.updated_areas.append(map_update_id)
 			SignalBus.message_popup.emit("Map Updated!")
-			SignalBus.update_map.emit(map_update_id)
+			SignalBus.get_map_poly_points.emit(map_update_id)
 			Global.ink_amount = clamp(Global.ink_amount-ink_cost,0,Global.max_ink)
 			await get_tree().create_timer(2.8).timeout
 			SignalBus.update_ink.emit()

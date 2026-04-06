@@ -20,6 +20,11 @@ var menu_buttuns:Array = []
 @export var in_game_menu:MarginContainer
 @export var press_sfx:AudioStreamPlayer
 @export var hover_sfx:AudioStreamPlayer
+
+
+@export var map_background: Control
+
+
 signal screen_finished
 signal message_finished
 # Called when the node enters the scene tree for the first time.
@@ -75,6 +80,12 @@ func on_message_recived(message:String):
 	await tween.finished
 	message_finished.emit()
 
+
+func _draw_map() -> void:
+	map_background.queue_redraw()
+	map_background.draw_polyline([Vector2(12, 34), Vector2(56, 78),Vector2(100,80)],Color(1,1,1,1),5)
+	
+
 func on_died():
 	print("1")
 	death_screen.visible = true
@@ -126,7 +137,7 @@ func on_map_update(id:int):
 	for area in map.get_children():
 		if area.area_id == id:
 			area.visible = false
-
+	map_background.queue_redraw()
 
 func _on_menu_button_pressed() -> void:
 	press_sfx.play()
