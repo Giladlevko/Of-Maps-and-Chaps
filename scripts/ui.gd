@@ -137,8 +137,7 @@ func on_map_update(id:int):
 	for area in map.get_children():
 		if area.area_id == id:
 			area.visible = false
-	map_background.queue_redraw()
-
+	map_background.handle_map_update()
 func _on_menu_button_pressed() -> void:
 	press_sfx.play()
 	if !in_game_menu.visible:

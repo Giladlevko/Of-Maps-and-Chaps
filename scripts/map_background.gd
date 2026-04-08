@@ -13,14 +13,21 @@ func _process(delta: float) -> void:
 	pass
 
 func _draw() -> void:
-	for area in map_ids:
-		draw_polyline_colors(map_areas[area],[Color(1,1,1,1)])
-		print(map_areas[area])
+	
+	for id in map_ids:
+		for poly:PackedVector2Array in map_areas[id]:
+			draw_polyline_colors(poly,[Color(1,1,1,1)])
+			print("poly: ", poly,type_string(typeof(poly)))
 		
 		
 		
 
 func handle_map_update(map_poly:PackedVector2Array,poly_id:int):
-	map_areas[poly_id] = map_poly
-	map_ids.append(poly_id)
-	queue_redraw()
+	if !map_poly.is_empty():
+		if !map_areas.has(poly_id):
+			map_areas[poly_id] = [map_poly]
+			print("map_poly ",map_poly)
+		else:
+			map_areas[poly_id].append(PackedVector2Array(map_poly))
+		map_ids.append(poly_id)
+		queue_redraw()

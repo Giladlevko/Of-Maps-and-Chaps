@@ -14,6 +14,7 @@ var areas_amount: int = 12
 var not_updated_map_visited_areas:Array
 var current_level: String = "level_1"
 var current_dialog_id:int = 3
+var corner_tiles:PackedVector2Array = []
 ##(left:x,top:y,right:z,bottom:w)
 var cam_bounds:Vector4 = Vector4(-1000000,-1000000,1000000,350):
 	set(value):

@@ -356,10 +356,8 @@ shape = SubResource("CapsuleShape2D_y4r1p")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_dt7fs")
-animation = &"super_dash"
+animation = &"idle"
 autoplay = "idle"
-frame = 3
-frame_progress = 0.0720225
 
 [node name="states" type="Node" parent="."]
 script = ExtResource("5_ur7pv")
