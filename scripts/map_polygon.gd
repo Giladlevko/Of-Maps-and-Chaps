@@ -60,8 +60,8 @@ func snap_to_step(value:float,step:int) -> int:
 
 func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 	var sorted_points:PackedVector2Array = PackedVector2Array()
-	var last_object = 0
-	var points_copy = points
+	var last_object:Vector2 = Vector2.ZERO
+	var points_copy:PackedVector2Array = points
 	var prefers_x:bool = true
 	var failed_attempts:int = 0
 	while points_copy.size()>0:
@@ -75,13 +75,13 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 				#must use break so i would update and reset to 0 after removing point from original array 
 				break
 			elif prefers_x:
-				last_object = sorted_points.size() - 1
+				last_object = sorted_points.get(sorted_points.size() - 1)
 				#get matching points
-				var matching_x_points:Array = get_matching_points(points,sorted_points,point,last_object,prefers_x)
+				var matching_x_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
 				
 				if matching_x_points.size() > 1:
 					#if more than one matching point find the closest one
-					var closest_point = handle_multiple_matching_points(matching_x_points,sorted_points,last_object,prefers_x)
+					var closest_point = handle_multiple_matching_points(matching_x_points,last_object,prefers_x)
 					sorted_points.append(closest_point)
 					
 					#find and get remove the closest point 
@@ -106,11 +106,11 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 					#no x_matching points
 					prefers_x = false
 			else:
-				last_object = sorted_points.size() - 1
-				var matching_y_points = get_matching_points(points,sorted_points,point,last_object,prefers_x)
+				last_object = sorted_points[sorted_points.size() - 1]
+				var matching_y_points = get_matching_points(points,sorted_points,last_object,prefers_x)
 				
 				if matching_y_points.size() > 1:
-					var closest_point = handle_multiple_matching_points(matching_y_points,sorted_points,last_object,prefers_x)
+					var closest_point = handle_multiple_matching_points(matching_y_points,last_object,prefers_x)
 					sorted_points.append(closest_point)
 					#find and remove the closest point 
 					#print("points_copy_BEFORE: ",points_copy)
@@ -143,37 +143,40 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 	print("sorted: ",sorted_points)
 	return sorted_points
 
-
+#TODO make a function that checks if thre is an inner block between two potentiol neighbors
 func get_matching_points(
-	points_array:Array,sorted_points:Array,original_point:Vector2,last_object:int,prefers_x:bool
+	points_array:Array,sorted_points:Array,last_object:Vector2,prefers_x:bool
 	)-> Array:
 	
 	var matching_points:Array
 	for j in range(points_array.size()):
-		if prefers_x:
-			if (points_array[j].x == sorted_points[last_object].x) and !sorted_points.has(points_array[j]):
-				#get all matching points
-				matching_points.append(points_array[j])
-		else:
-			if (points_array[j].y == sorted_points[last_object].y) and !sorted_points.has(points_array[j]):
-				#get all matching points
-				matching_points.append(points_array[j])
+		if !sorted_points.has(points_array[j]):
+			if prefers_x:
+				if (points_array[j].x == last_object.x):
+					#get all matching points
+					matching_points.append(points_array[j])
+			else:
+				if (points_array[j].y == last_object.y):
+					#get all matching points
+					matching_points.append(points_array[j])
 	#print("prefers_x: ",prefers_x,": ",matching_points)
 	#print("points_array: ",points_array)
+	if matching_points.is_empty():
+		print("############### ERORR: NO MATCHING POINTS FOUND!!! ##############")
 	return matching_points
 
 
-func handle_multiple_matching_points(matching_points:Array,sorted_points:Array,last_object:int,prefers_x:bool) -> Vector2:
+func handle_multiple_matching_points(matching_points:Array,last_object:Vector2,prefers_x:bool) -> Vector2:
 	var distance_of_points:Dictionary
 	for x_point_index in matching_points.size():
 		var i_point = matching_points[x_point_index]
 		#makes the distance the key and the point the value for easy sorting and access
-		#print("ORIGINAL POINT = ",sorted_points[last_object])
+		#print("ORIGINAL POINT = ",last_object)
 		#print("X POINT = ",x_point)
 		if prefers_x:
-			distance_of_points[abs( sorted_points[last_object].y - i_point.y )] = i_point
+			distance_of_points[abs( last_object.y - i_point.y )] = i_point
 		else:
-			distance_of_points[abs( sorted_points[last_object].x - i_point.x )] = i_point
+			distance_of_points[abs(last_object.x - i_point.x )] = i_point
 	var keys:Array = distance_of_points.keys()
 	keys.sort()
 	print("CHOSEN OBJECT BASED ON DISTANCE: ",distance_of_points[distance_of_points.keys()[0]])
