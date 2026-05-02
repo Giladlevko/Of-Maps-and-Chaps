@@ -11,7 +11,6 @@ const GRID_STEP = 1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-
 	# rect needed for easier check of tiles in the required region
 	if tile_map_layer:
 		SignalBus.get_map_poly_points.connect(send_points)
@@ -38,7 +37,6 @@ func _process(delta: float) -> void:
 
 func get_corners():
 # checks int points in rect and sees if there is a tile with those coordinates
-	
 	for tile in Global.corner_tiles:
 		print("tile: ",tile)
 		var global_tile_pos:Vector2 = tile_map_layer.to_global(tile_map_layer.map_to_local(tile))
@@ -75,7 +73,7 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 				#must use break so i would update and reset to 0 after removing point from original array 
 				break
 			elif prefers_x:
-				last_object = sorted_points.get(sorted_points.size() - 1)
+				last_object = get_last_point(sorted_points)
 				#get matching points
 				var matching_x_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
 				
@@ -85,20 +83,20 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 					sorted_points.append(closest_point)
 					
 					#find and get remove the closest point 
-					#print("points_copy_BEFORE: ",points_copy)
+					print("points_copy_BEFORE: ",points_copy)
 					points_copy.remove_at(points_copy.find(closest_point))
-					#print("points_copy_AFTER: ",points_copy)
+					print("points_copy_AFTER: ",points_copy)
 					prefers_x = false
-					#print(i,": ",sorted_points)
+					print(i,": ",sorted_points)
 					break
 					
 				elif matching_x_points.size() > 0:
 					var matching_point:Vector2 = matching_x_points[0]
 					sorted_points.append(matching_x_points[0])
-					#print("points_copy_BEFORE: ",points_copy)
+					print("points_copy_BEFORE: ",points_copy)
 					points_copy.remove_at(points_copy.find(matching_point))
-					#print("points_copy_AFTER: ",points_copy)
-					#print(i,": ",sorted_points)
+					print("points_copy_AFTER: ",points_copy)
+					print(i,": ",sorted_points)
 					prefers_x = false
 					
 					break
@@ -106,25 +104,25 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 					#no x_matching points
 					prefers_x = false
 			else:
-				last_object = sorted_points[sorted_points.size() - 1]
-				var matching_y_points = get_matching_points(points,sorted_points,last_object,prefers_x)
+				last_object = get_last_point(sorted_points)
+				var matching_y_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
 				
 				if matching_y_points.size() > 1:
 					var closest_point = handle_multiple_matching_points(matching_y_points,last_object,prefers_x)
 					sorted_points.append(closest_point)
 					#find and remove the closest point 
-					#print("points_copy_BEFORE: ",points_copy)
+					print("points_copy_BEFORE: ",points_copy)
 					points_copy.remove_at(points_copy.find(closest_point))
-					#print("points_copy_AFTER: ",points_copy)
+					print("points_copy_AFTER: ",points_copy)
 					prefers_x = true
 					print(i,": ",sorted_points)
 					break
 				elif matching_y_points.size()>0:
 					var matching_point:Vector2 = matching_y_points[0]
 					sorted_points.append(matching_y_points[0])
-					#print("points_copy_BEFORE: ",points_copy)
+					print("points_copy_BEFORE: ",points_copy)
 					points_copy.remove_at(points_copy.find(matching_point))
-					#print("points_copy_AFTER: ",points_copy)
+					print("points_copy_AFTER: ",points_copy)
 					prefers_x = true
 					print(i,": ",sorted_points)
 					#must use break so i would update and reset to 0 after removing point from original array 
@@ -153,12 +151,14 @@ func get_matching_points(
 		if !sorted_points.has(points_array[j]):
 			if prefers_x:
 				if (points_array[j].x == last_object.x):
-					#get all matching points
-					matching_points.append(points_array[j])
+					if !has_inner_block_between(last_object,points_array[j]):
+						#get all matching points
+						matching_points.append(points_array[j])
 			else:
 				if (points_array[j].y == last_object.y):
-					#get all matching points
-					matching_points.append(points_array[j])
+					if !has_inner_block_between(last_object,points_array[j]):
+						#get all matching points
+						matching_points.append(points_array[j])
 	#print("prefers_x: ",prefers_x,": ",matching_points)
 	#print("points_array: ",points_array)
 	if matching_points.is_empty():
@@ -182,6 +182,35 @@ func handle_multiple_matching_points(matching_points:Array,last_object:Vector2,p
 	print("CHOSEN OBJECT BASED ON DISTANCE: ",distance_of_points[distance_of_points.keys()[0]])
 	return distance_of_points[keys[0]]
 
+func get_last_point(arr:PackedVector2Array)->Vector2:
+	return arr[arr.size()-1]
+
+
+func has_inner_block_between(point:Vector2,potential_match:Vector2)->bool:
+	#print("#############POINT: ",point,"  POTENTIAL: ",potential_match)
+	var dir: Vector2i = Vector2i((potential_match-point).sign())
+	#print("################## DIR: ",dir)
+	var local_map_point:Vector2 = tile_map_layer.to_local(point)
+	var coord:Vector2i = tile_map_layer.local_to_map(local_map_point)
+	var neighbor_type:TileSet.CellNeighbor
+	match dir:
+		Vector2i.RIGHT: neighbor_type = TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE
+		Vector2i.UP: neighbor_type = TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_SIDE
+		Vector2i.LEFT: neighbor_type = TileSet.CellNeighbor.CELL_NEIGHBOR_LEFT_SIDE
+		Vector2i.DOWN: neighbor_type = TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_SIDE
+		_:
+			print("########ERROR ANGLE OF TWO POTENTIAL NEIGHBORS DOESN'T MATCH!!!!########","   DIR IS: ",dir)
+			return true
+	var neighbor_tile:Vector2i = tile_map_layer.get_neighbor_cell(coord,neighbor_type)
+	var data:TileData = tile_map_layer.get_cell_tile_data(neighbor_tile)
+	
+	if !data:return false
+	print("################### NEIGHBOR: ",neighbor_tile," DATA: ",data.get_custom_data("inner_block"))
+	return data.get_custom_data("inner_block") == true
+	
+	pass
+
+
 func sort_corners(a:Vector2,b:Vector2) -> bool:
 	if (a.x == b.x or a.y == b.y) and (a!=b):
 		return true
@@ -189,7 +218,6 @@ func sort_corners(a:Vector2,b:Vector2) -> bool:
 
 
 func send_points(recived_id:int):
-	
 	if map_id == recived_id:
 		get_corners()
 		#var points_array:PackedVector2Array = polygon
@@ -198,7 +226,7 @@ func send_points(recived_id:int):
 		#var lowest_x = get_lowest_x(points_array)
 		if sorted_corners.is_empty():
 			return
-		var points_array = sorted_corners
+		var points_array:PackedVector2Array = sorted_corners
 		points_array.append(points_array[0])
 		for point in points_array.size():
 			points_array[point] = points_array[point]/Vector2(6,6)
