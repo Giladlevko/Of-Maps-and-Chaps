@@ -28,4 +28,5 @@ func get_corners():
 		if data and data.get_custom_data("corners") == true:
 			all_corner_tiles.append(tile)
 	Global.corner_tiles = all_corner_tiles
+	SignalBus.calc_map_scale.emit()
 	print("Global.corner_tiles: ",Global.corner_tiles)
