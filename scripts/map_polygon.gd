@@ -54,9 +54,9 @@ func snap_to_step(value:float,step:int) -> int:
 	return snapped_value
 
 func sort_points(points:PackedVector2Array) -> PackedVector2Array:
-	var sorted_points:PackedVector2Array = PackedVector2Array()
+	var sorted_points:Array = Array()
 	var last_object:Vector2 = Vector2.ZERO
-	var points_copy:PackedVector2Array = points
+	var points_copy:Array = points
 	var prefers_x:bool = true
 	var failed_attempts:int = 0
 	while points_copy.size()>0:
@@ -73,68 +73,60 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 				last_object = get_last_point(sorted_points)
 				#get matching points
 				var matching_x_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
-				
 				if matching_x_points.size() > 1:
 					#if more than one matching point find the closest one
-					var closest_point = handle_multiple_matching_points(matching_x_points,last_object,prefers_x)
-					sorted_points.append(closest_point)
-					
+					var closest_point:Vector2 = handle_multiple_matching_points(matching_x_points,last_object,prefers_x)
 					#find and get remove the closest point 
-					#print("points_copy_BEFORE: ",points_copy)
-					points_copy.remove_at(points_copy.find(closest_point))
-					#print("points_copy_AFTER: ",points_copy)
+					failed_attempts = move_point(sorted_points,points_copy,closest_point)
 					prefers_x = false
-					#print(i,": ",sorted_points)
 					break
 					
 				elif matching_x_points.size() > 0:
 					var matching_point:Vector2 = matching_x_points[0]
-					sorted_points.append(matching_x_points[0])
-					#print("points_copy_BEFORE: ",points_copy)
-					points_copy.remove_at(points_copy.find(matching_point))
-					#print("points_copy_AFTER: ",points_copy)
-					#print(i,": ",sorted_points)
+					#find and remove the point 
+					failed_attempts = move_point(sorted_points,points_copy,matching_point)
 					prefers_x = false
-					
 					break
 				else:
-					#no x_matching points
 					prefers_x = false
+					break
+					pass
+					
+				
 			else:
 				last_object = get_last_point(sorted_points)
 				var matching_y_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
-				
 				if matching_y_points.size() > 1:
-					var closest_point = handle_multiple_matching_points(matching_y_points,last_object,prefers_x)
-					sorted_points.append(closest_point)
 					#find and remove the closest point 
-					#print("points_copy_BEFORE: ",points_copy)
-					points_copy.remove_at(points_copy.find(closest_point))
-					#print("points_copy_AFTER: ",points_copy)
+					var closest_point = handle_multiple_matching_points(matching_y_points,last_object,prefers_x)
+					failed_attempts = move_point(sorted_points,points_copy,closest_point)
 					prefers_x = true
-					#print(i,": ",sorted_points)
 					break
 				elif matching_y_points.size()>0:
 					var matching_point:Vector2 = matching_y_points[0]
-					sorted_points.append(matching_y_points[0])
-					#print("points_copy_BEFORE: ",points_copy)
-					points_copy.remove_at(points_copy.find(matching_point))
-					#print("points_copy_AFTER: ",points_copy)
+					failed_attempts = move_point(sorted_points,points_copy,matching_point)
 					prefers_x = true
-					#print(i,": ",sorted_points)
-					#must use break so i would update and reset to 0 after removing point from original array 
 					break
 				else:
 					# no y matching points
-					prefers_x = true
 					failed_attempts+=1
 					if failed_attempts>=points.size()*2:
-						push_error("FAILED FAILED FAILED AND FAILED!!!################################################### ")
-						return sorted_points
+						push_error("ERROR: MAP POINT SORTING FAILED!")
+						return PackedVector2Array(sorted_points)
+					prefers_x = true
 					break
-	sorted_corners = sorted_points
+	sorted_corners = PackedVector2Array(sorted_points)
 	#print("sorted: ",sorted_points)
-	return sorted_points
+	return PackedVector2Array(sorted_points)
+
+
+func move_point(target_arr:Array,curr_arr:Array,point_val:Vector2)-> int:
+	print("curr_arr.find(point_val): ",curr_arr.find(point_val))
+	target_arr.append(point_val)
+	curr_arr.remove_at(curr_arr.find(point_val))
+	var failed_amount:int = 0
+	return failed_amount
+	
 
 #TODO make a function that checks if thre is an inner block between two potentiol neighbors
 #DONE 
@@ -158,7 +150,9 @@ func get_matching_points(
 	#print("prefers_x: ",prefers_x,": ",matching_points)
 	#print("points_array: ",points_array)
 	if matching_points.is_empty():
-		push_error("############### ERORR: NO MATCHING POINTS FOUND!!! Last point: ",last_object,"##############")
+		push_warning("ERORR: NO MATCHING POINTS FOUND!!! Last point: ",last_object," prefers_x: ",prefers_x)
+		push_warning(" sorted points: ",sorted_points)
+		push_warning(" all points: ",points_array)
 	return matching_points
 
 
@@ -205,12 +199,6 @@ func has_inner_block_between(point:Vector2,potential_match:Vector2)->bool:
 	return data.get_custom_data("inner_block") == true
 	
 	pass
-
-
-func sort_corners(a:Vector2,b:Vector2) -> bool:
-	if (a.x == b.x or a.y == b.y) and (a!=b):
-		return true
-	return false
 
 
 func send_points(recived_id:int):

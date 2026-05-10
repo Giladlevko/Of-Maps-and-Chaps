@@ -34,12 +34,16 @@ func handle_map_update(map_poly:PackedVector2Array,poly_id:int):
 		queue_redraw()
 
 func scale_points(sorted_corners:PackedVector2Array):
-	var MAP_UI_HEIGHT =648
-	var MAP_UI_LENGTH = 1152
+	var map_x_size:float = abs(Global.MAP_COORD_MAX.x - Global.MAP_COORD_MIN.x)
+	var map_y_size:float = abs(Global.MAP_COORD_MAX.y - Global.MAP_COORD_MIN.y)
+	const margin_val = 30
+	const MAP_UI_LENGTH = 1152 - margin_val
+	const Y_START_VAL = 648 - margin_val
+	var MAP_UI_HEIGHT = MAP_UI_LENGTH*(map_y_size/map_x_size)
 	var points_array:PackedVector2Array = sorted_corners
 	
 	for point in points_array.size():
 		print("Before: ",points_array[point])
-		points_array[point].x = (remap(points_array[point].x,Global.MAP_COORD_MIN.x,Global.MAP_COORD_MAX.x,0,MAP_UI_LENGTH))
-		points_array[point].y = (remap(points_array[point].y,Global.MAP_COORD_MIN.y,Global.MAP_COORD_MAX.y,MAP_UI_HEIGHT,0))
+		points_array[point].x = (remap(points_array[point].x,Global.MAP_COORD_MIN.x,Global.MAP_COORD_MAX.x,margin_val,MAP_UI_LENGTH))
+		points_array[point].y = (remap(points_array[point].y,Global.MAP_COORD_MIN.y,Global.MAP_COORD_MAX.y,Y_START_VAL,MAP_UI_HEIGHT))
 		print("After: ",points_array[point])
