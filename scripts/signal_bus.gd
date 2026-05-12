@@ -5,6 +5,8 @@ signal player_died
 signal death_finished
 signal get_map_poly_points(id:int)
 signal update_map(poly_points:PackedVector2Array,id:int)
+signal map_flag_pressed(flag_pos:Vector2)
+signal add_check_point_to_map(check_point_pos:Vector2)
 signal calc_map_scale
 signal unlock_platform
 signal update_cam_bounds

@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://q25dyqalrwpw" path="res://scenes/ability_getter.tscn" id="11_hey2k"]
 [ext_resource type="PackedScene" uid="uid://dory4n6alh061" path="res://scenes/toxic_gas.tscn" id="12_172wr"]
 [ext_resource type="PackedScene" uid="uid://ublmp2rdoq3i" path="res://scenes/chest.tscn" id="13_g2hoc"]
-[ext_resource type="PackedScene" uid="uid://4ie5nfj37beu" path="res://scenes/map_polygon.tscn" id="14_fldb1"]
+[ext_resource type="PackedScene" uid="uid://4ie5nfj37beu" path="res://assets/ui_sprites/map_polygon.tscn" id="14_fldb1"]
 [ext_resource type="PackedScene" uid="uid://c007lvsekx0yj" path="res://scenes/update_map_node.tscn" id="15_guvtl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b4j7a"]
@@ -983,7 +983,7 @@ atlas = ExtResource("2_b4j7a")
 region = Rect2(0, 208, 16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2hoc"]
-radius = 5.33626
+radius = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fldb1"]
 radius = 8.0

@@ -1,10 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://q4awegofsse7"]
+[gd_scene load_steps=21 format=3 uid="uid://q4awegofsse7"]
 
 [ext_resource type="Script" uid="uid://bry0xo81di5qg" path="res://scripts/ui.gd" id="1_jkj6h"]
 [ext_resource type="Theme" uid="uid://cbwouf86hnij0" path="res://themes/UI_theme.tres" id="2_sk4pr"]
-[ext_resource type="Texture2D" uid="uid://k7ffod7v8p0w" path="res://assets/map.png" id="3_8isll"]
-[ext_resource type="Texture2D" uid="uid://bnar4jb3ugwf8" path="res://assets/ink_drop.png" id="3_48xfa"]
-[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/Sprite sheet for Basic Pack.png" id="4_7ctsh"]
+[ext_resource type="Texture2D" uid="uid://k7ffod7v8p0w" path="res://assets/ui_sprites/map.png" id="3_8isll"]
+[ext_resource type="Texture2D" uid="uid://bnar4jb3ugwf8" path="res://assets/ui_sprites/ink_drop.png" id="3_48xfa"]
+[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/ui_sprites/Sprite sheet for Basic Pack.png" id="4_7ctsh"]
 [ext_resource type="Script" uid="uid://c7bokvhb3f28q" path="res://scripts/map_background.gd" id="5_g4s8q"]
 [ext_resource type="Script" uid="uid://bj24co5l7ll6" path="res://scripts/map_areas.gd" id="6_bkx2g"]
 [ext_resource type="AudioStream" uid="uid://clahnhvopbk6b" path="res://assets/sounds/hover-button-287656.mp3" id="7_wsb5h"]
@@ -127,6 +127,17 @@ region_rect = Rect2(869, 102, 22, 22)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wsb5h"]
 texture = ExtResource("4_7ctsh")
 region_rect = Rect2(837, 100, 22, 24)
+
+[sub_resource type="Gradient" id="Gradient_g4s8q"]
+colors = PackedColorArray(0, 0.580392, 0.521569, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_17uas"]
+gradient = SubResource("Gradient_g4s8q")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.109756, 0.128049)
 
 [node name="UI" type="Control" node_paths=PackedStringArray("ink_label", "ink_anim", "map", "map_container", "message_label", "death_rect", "death_label", "map_button", "back_to_game_button", "death_screen", "close_menu_button", "main_menu_button", "menu_button", "menu_anim", "in_game_menu", "press_sfx", "hover_sfx", "map_background")]
 process_mode = 3
@@ -377,7 +388,7 @@ patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 5
 
-[node name="map_background" type="Control" parent="Control/map_container/background"]
+[node name="map_background" type="Control" parent="Control/map_container/background" node_paths=PackedStringArray("player_icon", "check_points")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -385,8 +396,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_g4s8q")
+player_icon = NodePath("player_icon")
+check_points = NodePath("check_points")
+
+[node name="player_icon" type="Control" parent="Control/map_container/background/map_background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control/map_container/background/map_background/player_icon"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("GradientTexture2D_17uas")
+
+[node name="check_points" type="Control" parent="Control/map_container/background/map_background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="map_container" type="MarginContainer" parent="Control/map_container"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10

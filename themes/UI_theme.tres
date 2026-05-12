@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=6 format=3 uid="uid://cbwouf86hnij0"]
 
-[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/Sprite sheet for Basic Pack.png" id="1_12j8l"]
-[ext_resource type="FontFile" uid="uid://csmfu8i2u5qn5" path="res://assets/PixelOperator8.ttf" id="1_ktcvj"]
+[ext_resource type="Texture2D" uid="uid://bxfybbocqh14k" path="res://assets/ui_sprites/Sprite sheet for Basic Pack.png" id="1_12j8l"]
+[ext_resource type="FontFile" uid="uid://csmfu8i2u5qn5" path="res://assets/ui_sprites/PixelOperator8.ttf" id="1_ktcvj"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ktcvj"]
 texture = ExtResource("1_12j8l")

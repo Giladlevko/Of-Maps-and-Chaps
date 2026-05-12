@@ -21,6 +21,7 @@ var menu_buttuns:Array = []
 @export var press_sfx:AudioStreamPlayer
 @export var hover_sfx:AudioStreamPlayer
 
+@export var player_icon:Control
 
 @export var map_background: Control
 
@@ -38,7 +39,9 @@ func _ready() -> void:
 	menu_buttuns = [map_button,back_to_game_button,main_menu_button,close_menu_button,menu_button]
 	SignalBus.update_map.connect(on_map_update)
 	SignalBus.transfer_to_scene.connect(transfer_to_scene)
-
+	
+	
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	for button in menu_buttuns:

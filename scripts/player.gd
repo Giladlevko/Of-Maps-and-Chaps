@@ -42,7 +42,13 @@ func _ready() -> void:
 	Dialogic.timeline_started.connect(on_dialog)
 	Dialogic.timeline_ended.connect(on_dialog)
 	SignalBus.update_cam_bounds.connect(handle_cam_bounds)
+	
+	SignalBus.map_flag_pressed.connect(teleport_to_check_point)
+	
 	last_pos = position
+
+func teleport_to_check_point(check_point_pos:Vector2):
+	global_position = check_point_pos
 
 func reset_bar(bar:ProgressBar):
 	dash_bar.max_value = dash_cooldown
@@ -68,6 +74,7 @@ func _process(delta: float) -> void:
 	elif Input.is_action_just_pressed("right"):
 		last_dir = 1
 	
+	Global.player_pos = global_position
 
 
 
@@ -98,6 +105,7 @@ func _on_interact_zone_area_entered(area: Area2D) -> void:
 			last_pos = area.position
 			if !Global.reached_check_points.has(area.name):
 				SignalBus.message_popup.emit("Check-Point Reached!")
+				SignalBus.add_check_point_to_map.emit(global_position)
 				Global.reached_check_points.append(area.name)
 		if area.is_in_group("kills"):
 			on_dead()

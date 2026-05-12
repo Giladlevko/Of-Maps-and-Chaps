@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://pk5xsmf0eu0j"]
+
+[ext_resource type="Script" uid="uid://c63mgw1bx6dss" path="res://scripts/map_flag_button.gd" id="1_lwiek"]
+[ext_resource type="Texture2D" uid="uid://bqfp8qae15a7e" path="res://assets/ui_sprites/map_flag.png" id="1_ou7r5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lwiek"]
+atlas = ExtResource("1_ou7r5")
+region = Rect2(0, 12, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmn8v"]
+atlas = ExtResource("1_ou7r5")
+region = Rect2(0, 0, 12, 12)
+
+[node name="map_flag_button" type="Control"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 3
+anchors_preset = 0
+size_flags_vertical = 4
+script = ExtResource("1_lwiek")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 1
+offset_right = 12.0
+offset_bottom = 12.0
+scale = Vector2(1.5, 1.5)
+texture_normal = SubResource("AtlasTexture_lwiek")
+texture_pressed = SubResource("AtlasTexture_vmn8v")
+texture_hover = SubResource("AtlasTexture_vmn8v")
+
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]

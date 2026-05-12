@@ -13,6 +13,7 @@ var updated_areas:Array = []
 var areas_amount: int = 12
 var not_updated_map_visited_areas:Array
 var current_level: String = "level_1"
+var player_pos:Vector2
 var current_dialog_id:int = 3
 var corner_tiles:PackedVector2Array = []
 var MAP_COORD_MIN:Vector2

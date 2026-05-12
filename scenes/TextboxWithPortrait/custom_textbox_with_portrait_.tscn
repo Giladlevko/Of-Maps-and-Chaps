@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://scwjudblk6mc" path="res://addons/dialogic/Modules/Text/node_name_label.gd" id="2_y0h34"]
 [ext_resource type="Script" uid="uid://7i885ohd3h3j" path="res://addons/dialogic/Modules/Text/node_dialog_text.gd" id="3_11puy"]
 [ext_resource type="Script" uid="uid://d4d65jub4c7ti" path="res://addons/dialogic/Modules/Text/node_type_sound.gd" id="5_sr2qw"]
-[ext_resource type="Texture2D" uid="uid://o8cic5vxhv0a" path="res://assets/interact_popup.png" id="6_op2i5"]
+[ext_resource type="Texture2D" uid="uid://o8cic5vxhv0a" path="res://assets/ui_sprites/interact_popup.png" id="6_op2i5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmg1w"]
 bg_color = Color(0.254902, 0.254902, 0.254902, 1)
