@@ -1,3 +1,4 @@
+@tool
 extends Polygon2D
 @export var map_id:int = 0
 @export var tile_map_layer:TileMapLayer
@@ -9,6 +10,24 @@ var sorted_corners: PackedVector2Array = []
 var global_poly:PackedVector2Array = []
 const GRID_STEP = 1
 var MAP_SCALE:float
+@export_tool_button("Add Sub Region!") var add_region = add_sub_region
+@export_tool_button("Remove Sub Region") var remove_region = remove_sub_region
+@export var sub_region_to_modify:int = -1
+
+@export var sub_region_id:int:
+	get():
+		if sub_region_to_modify == -1: return -1
+		if sub_region_to_modify+1>get_child_count():return -1
+		var sub_region:MAP_SUB_REGION = get_child(sub_region_to_modify)
+		return sub_region.sub_id
+	set(value):
+		if sub_region_to_modify == -1: return
+		if sub_region_to_modify+1>get_child_count(): return
+		#remove_sub_region()
+		#call_deferred("add_sub_region",value)
+		var sub_region:MAP_SUB_REGION = get_child(sub_region_to_modify)
+		sub_region.set("sub_id",value)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# rect needed for easier check of tiles in the required region
@@ -221,8 +240,24 @@ func send_points(recived_id:int):
 		SignalBus.update_map.emit(sorted_corners,map_id)
 		#print(points_array)
 
+var child_indx:int = 0
+func add_sub_region(sub_id:int = 0):
+	const SUB_POLY:PackedScene = preload("res://scenes/map_sub_region.tscn")
+	var sub_reg = SUB_POLY.instantiate()
+	add_child(sub_reg)
+	sub_reg.owner = get_tree().edited_scene_root
+	sub_reg.sub_id = sub_id
+	sub_reg.name = "sub_"+str(child_indx)
+	#set_editable_instance(get_child(child_indx),true)
+	
+	child_indx+=1
+	print("added sub region")
+	pass
 
-
+func remove_sub_region():
+	if sub_region_to_modify+1>get_child_count(): return
+	get_child(sub_region_to_modify).queue_free()
+	child_indx-=1
 
 func get_lowest_x(points: PackedVector2Array) -> float:
 	if points.is_empty():
