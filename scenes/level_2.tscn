@@ -976,20 +976,20 @@ atlas = ExtResource("2_b4j7a")
 region = Rect2(16, 192, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_172wr"]
-radius = 0.0
+radius = 8.23188
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_guvtl"]
 atlas = ExtResource("2_b4j7a")
 region = Rect2(0, 208, 16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2hoc"]
-radius = 0.0
+radius = 2.72464
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fldb1"]
-radius = 8.0
+radius = 6.26087
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_guvtl"]
-radius = 8.0
+radius = 6.26087
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7qsfm"]
 atlas = ExtResource("2_b4j7a")
@@ -1087,7 +1087,7 @@ horizantal = false
 [node name="checkpoints" type="Node" parent="."]
 
 [node name="check_point" parent="checkpoints" instance=ExtResource("7_y0kc7")]
-position = Vector2(280, -77)
+position = Vector2(280, -75)
 
 [node name="check_point2" parent="checkpoints" instance=ExtResource("7_y0kc7")]
 position = Vector2(772, -123)

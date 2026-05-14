@@ -19,6 +19,11 @@ var corner_tiles:PackedVector2Array = []
 var MAP_COORD_MIN:Vector2
 var MAP_COORD_MAX:Vector2
 var MIN_POS:Vector2
+
+class map_point:
+	var point_id:int
+	var coord:Vector2
+
 ##(left:x,top:y,right:z,bottom:w)
 var cam_bounds:Vector4 = Vector4(-1000000,-1000000,1000000,350):
 	set(value):

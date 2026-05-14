@@ -105,7 +105,7 @@ func _on_interact_zone_area_entered(area: Area2D) -> void:
 			last_pos = area.position
 			if !Global.reached_check_points.has(area.name):
 				SignalBus.message_popup.emit("Check-Point Reached!")
-				SignalBus.add_check_point_to_map.emit(global_position)
+				SignalBus.add_check_point_to_map.emit(area.global_position)
 				Global.reached_check_points.append(area.name)
 		if area.is_in_group("kills"):
 			on_dead()
