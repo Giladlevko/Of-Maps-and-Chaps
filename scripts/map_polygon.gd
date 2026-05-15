@@ -10,23 +10,34 @@ var sorted_corners: PackedVector2Array = []
 var global_poly:PackedVector2Array = []
 const GRID_STEP = 1
 var MAP_SCALE:float
-@export_tool_button("Add Sub Region!") var add_region = add_sub_region
+@onready var base_copy: Polygon2D = $base_copy
+@onready var sub_regions: Node2D = $sub_regions
+
+@export_tool_button("Add Sub Region!") var add_region:Callable = add_sub_region
 @export_tool_button("Remove Sub Region") var remove_region = remove_sub_region
 @export var sub_region_to_modify:int = -1
 
 @export var sub_region_id:int:
 	get():
-		if sub_region_to_modify == -1: return -1
-		if sub_region_to_modify+1>get_child_count():return -1
-		var sub_region:MAP_SUB_REGION = get_child(sub_region_to_modify)
+		if sub_region_to_modify <0: return -1
+		if sub_region_to_modify>=sub_regions.get_child_count():return -1
+		var sub_region:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
 		return sub_region.sub_id
 	set(value):
-		if sub_region_to_modify == -1: return
-		if sub_region_to_modify+1>get_child_count(): return
+		if sub_region_to_modify <0: return
+		if sub_region_to_modify>=sub_regions.get_child_count(): return
 		#remove_sub_region()
 		#call_deferred("add_sub_region",value)
-		var sub_region:MAP_SUB_REGION = get_child(sub_region_to_modify)
+		var sub_region:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
 		sub_region.set("sub_id",value)
+
+
+@export_tool_button("Set Sub Region Poly") var edit_sub_poly:Callable = edit_sub_poly_region
+@export_tool_button("Get Sub Region poly") var get_sub_poly:Callable = get_sub_region_poly
+@export var base_poly:PackedVector2Array
+@export_tool_button("Set Base Polygon") var set_base_poly:Callable = set_base_polygon
+@export_tool_button("Get Base Polygon") var get_base_poly:Callable = get_base_polygon
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -244,10 +255,12 @@ var child_indx:int = 0
 func add_sub_region(sub_id:int = 0):
 	const SUB_POLY:PackedScene = preload("res://scenes/map_sub_region.tscn")
 	var sub_reg = SUB_POLY.instantiate()
-	add_child(sub_reg)
+	sub_regions.add_child(sub_reg)
 	sub_reg.owner = get_tree().edited_scene_root
 	sub_reg.sub_id = sub_id
+	sub_reg.color = Color(randf_range(50,255)/255,randf_range(50,255)/255,randf_range(50,255),80.0/255)
 	sub_reg.name = "sub_"+str(child_indx)
+	sub_region_to_modify = sub_regions.get_child_count() - 1
 	#set_editable_instance(get_child(child_indx),true)
 	
 	child_indx+=1
@@ -255,9 +268,33 @@ func add_sub_region(sub_id:int = 0):
 	pass
 
 func remove_sub_region():
-	if sub_region_to_modify+1>get_child_count(): return
-	get_child(sub_region_to_modify).queue_free()
+	if (sub_region_to_modify <0) or (sub_region_to_modify >= sub_regions.get_child_count()): return
+	sub_regions.get_child(sub_region_to_modify).queue_free()
 	child_indx-=1
+
+
+func set_base_polygon():
+	base_poly = polygon
+	base_copy.polygon = base_poly
+	
+
+func get_base_polygon():
+	if base_poly.is_empty():return
+	polygon = base_poly 
+
+func edit_sub_poly_region():
+	if (sub_region_to_modify <0) or (sub_region_to_modify>=sub_regions.get_child_count()):
+		print("Cant set sub reg!",sub_region_to_modify,)
+		return
+	var sub_poly:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
+	sub_poly.sub_poly_points = polygon
+	#notify_property_list_changed()
+
+func get_sub_region_poly():
+	if (sub_region_to_modify <0) or (sub_region_to_modify>=sub_regions.get_child_count()):return
+	var sub_poly:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
+	polygon = sub_poly.sub_poly_points
+	
 
 func get_lowest_x(points: PackedVector2Array) -> float:
 	if points.is_empty():

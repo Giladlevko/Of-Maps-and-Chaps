@@ -8,10 +8,16 @@ extends Polygon2D
 		sub_id = value
 		print(name,"'s new id value is: ", value)
 		 
-
+@export var sub_poly_points:PackedVector2Array:
+	get():
+		return sub_poly_points
+	set(value):
+		sub_poly_points = value
+		polygon = sub_poly_points
+		print(name,"'s new poins are: ", value)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	sub_poly_points = polygon
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
