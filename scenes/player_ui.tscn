@@ -399,6 +399,14 @@ script = ExtResource("5_g4s8q")
 player_icon = NodePath("player_icon")
 check_points = NodePath("check_points")
 
+[node name="check_points" type="Control" parent="Control/map_container/background/map_background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="player_icon" type="Control" parent="Control/map_container/background/map_background"]
 anchors_preset = 0
 offset_right = 40.0
@@ -409,14 +417,6 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = SubResource("GradientTexture2D_17uas")
-
-[node name="check_points" type="Control" parent="Control/map_container/background/map_background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="map_container" type="MarginContainer" parent="Control/map_container"]
 visible = false

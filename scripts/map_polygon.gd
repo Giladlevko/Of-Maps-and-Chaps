@@ -5,13 +5,13 @@ extends Polygon2D
 var rect = Rect2(polygon[0],Vector2.ZERO)
 var start: Vector2i
 var end: Vector2i
-var corners_array:PackedVector2Array = []
 var sorted_corners: PackedVector2Array = []
 var global_poly:PackedVector2Array = []
 const GRID_STEP = 1
 var MAP_SCALE:float
 @onready var base_copy: Polygon2D = $base_copy
-@onready var sub_regions: Node2D = $sub_regions
+
+@export var sub_regions: Node2D
 
 @export_tool_button("Add Sub Region!") var add_region:Callable = add_sub_region
 @export_tool_button("Remove Sub Region") var remove_region = remove_sub_region
@@ -19,17 +19,20 @@ var MAP_SCALE:float
 
 @export var sub_region_id:int:
 	get():
-		if sub_region_to_modify <0: return -1
-		if sub_region_to_modify>=sub_regions.get_child_count():return -1
-		var sub_region:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
-		return sub_region.sub_id
+		if sub_regions.get_child_count() > 0:
+			if sub_region_to_modify <0: return -1
+			if sub_region_to_modify>=sub_regions.get_child_count():return -1
+			var sub_region:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
+			return sub_region.sub_id
+		return map_id
 	set(value):
-		if sub_region_to_modify <0: return
-		if sub_region_to_modify>=sub_regions.get_child_count(): return
-		#remove_sub_region()
-		#call_deferred("add_sub_region",value)
-		var sub_region:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
-		sub_region.set("sub_id",value)
+		if sub_regions.get_child_count() > 0:
+			if sub_region_to_modify <0: return
+			if sub_region_to_modify>=sub_regions.get_child_count(): return
+			#remove_sub_region()
+			#call_deferred("add_sub_region",value)
+			var sub_region:MAP_SUB_REGION = sub_regions.get_child(sub_region_to_modify)
+			sub_region.set("sub_id",value)
 
 
 @export_tool_button("Set Sub Region Poly") var edit_sub_poly:Callable = edit_sub_poly_region
@@ -66,31 +69,33 @@ func _process(delta: float) -> void:
 	tile_map_layer
 	pass
 
-func get_corners():
-	
+func get_corners()->Array[Global.map_point]:
+	var point_array:Array[Global.map_point]
 # checks int points in rect and sees if there is a tile with those coordinates
 	for tile in Global.corner_tiles:
 		#print("tile: ",tile)
 		var global_tile_pos:Vector2 = tile_map_layer.to_global(tile_map_layer.map_to_local(tile))
 		if rect.has_point(global_tile_pos):
 			if Geometry2D.is_point_in_polygon(global_tile_pos,global_poly):
-				corners_array.append(global_tile_pos)
-	#print("unsorted: ",corners_array)
-	sort_points(corners_array)
+				var point:Global.map_point = Global.map_point.new(map_id,global_tile_pos)
+				point_array.append(point)
+	#print("unsorted: ",point_array)
+	return sort_points(point_array)
 	#print("sorted_corners: ",sorted_corners)
 
 func snap_to_step(value:float,step:int) -> int:
 	var snapped_value:int = round(value/step)*step
 	return snapped_value
 
-func sort_points(points:PackedVector2Array) -> PackedVector2Array:
-	var sorted_points:Array = Array()
+func sort_points(points:Array[Global.map_point]) -> Array[Global.map_point]:
+	var sorted_points:Array[Global.map_point]
 	var last_object:Vector2 = Vector2.ZERO
-	var points_copy:Array = points
+	var points_copy:Array[Global.map_point] = points
 	var prefers_x:bool = true
+	var array_size:int = points.size()
 	var failed_attempts:int = 0
 	while points_copy.size()>0:
-		for i in range(points.size()):
+		for i in range(array_size):
 			var point = points[i]
 			
 			if sorted_points.is_empty():
@@ -102,17 +107,17 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 			elif prefers_x:
 				last_object = get_last_point(sorted_points)
 				#get matching points
-				var matching_x_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
+				var matching_x_points:Array[Global.map_point] = get_matching_points(points,sorted_points,last_object,prefers_x)
 				if matching_x_points.size() > 1:
 					#if more than one matching point find the closest one
-					var closest_point:Vector2 = handle_multiple_matching_points(matching_x_points,last_object,prefers_x)
+					var closest_point:Global.map_point = handle_multiple_matching_points(matching_x_points,last_object,prefers_x)
 					#find and get remove the closest point 
 					failed_attempts = move_point(sorted_points,points_copy,closest_point)
 					prefers_x = false
 					break
 					
 				elif matching_x_points.size() > 0:
-					var matching_point:Vector2 = matching_x_points[0]
+					var matching_point:Global.map_point = matching_x_points[0]
 					#find and remove the point 
 					failed_attempts = move_point(sorted_points,points_copy,matching_point)
 					prefers_x = false
@@ -125,15 +130,15 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 				
 			else:
 				last_object = get_last_point(sorted_points)
-				var matching_y_points:Array = get_matching_points(points,sorted_points,last_object,prefers_x)
+				var matching_y_points:Array[Global.map_point] = get_matching_points(points,sorted_points,last_object,prefers_x)
 				if matching_y_points.size() > 1:
 					#find and remove the closest point 
-					var closest_point = handle_multiple_matching_points(matching_y_points,last_object,prefers_x)
+					var closest_point:Global.map_point = handle_multiple_matching_points(matching_y_points,last_object,prefers_x)
 					failed_attempts = move_point(sorted_points,points_copy,closest_point)
 					prefers_x = true
 					break
 				elif matching_y_points.size()>0:
-					var matching_point:Vector2 = matching_y_points[0]
+					var matching_point:Global.map_point = matching_y_points[0]
 					failed_attempts = move_point(sorted_points,points_copy,matching_point)
 					prefers_x = true
 					break
@@ -142,18 +147,17 @@ func sort_points(points:PackedVector2Array) -> PackedVector2Array:
 					failed_attempts+=1
 					if failed_attempts>=points.size()*2:
 						push_error("ERROR: MAP POINT SORTING FAILED!")
-						return PackedVector2Array(sorted_points)
+						return (sorted_points)
 					prefers_x = true
 					break
-	sorted_corners = PackedVector2Array(sorted_points)
 	#print("sorted: ",sorted_points)
-	return PackedVector2Array(sorted_points)
+	return (sorted_points)
 
 
-func move_point(target_arr:Array,curr_arr:Array,point_val:Vector2)-> int:
-	print("curr_arr.find(point_val): ",curr_arr.find(point_val))
-	target_arr.append(point_val)
-	curr_arr.remove_at(curr_arr.find(point_val))
+func move_point(target_arr:Array[Global.map_point],curr_arr:Array[Global.map_point],point:Global.map_point)-> int:
+	print("curr_arr.find(point): ",curr_arr.find(point))
+	target_arr.append(point)
+	curr_arr.remove_at(curr_arr.find(point))
 	var failed_amount:int = 0
 	return failed_amount
 	
@@ -161,20 +165,20 @@ func move_point(target_arr:Array,curr_arr:Array,point_val:Vector2)-> int:
 #TODO make a function that checks if thre is an inner block between two potentiol neighbors
 #DONE 
 func get_matching_points(
-	points_array:Array,sorted_points:Array,last_object:Vector2,prefers_x:bool
-	)-> Array:
+	points_array:Array[Global.map_point],sorted_points:Array[Global.map_point],last_object:Vector2,prefers_x:bool
+	)-> Array[Global.map_point]:
 	
-	var matching_points:Array
+	var matching_points:Array[Global.map_point]
 	for j in range(points_array.size()):
 		if !sorted_points.has(points_array[j]):
 			if prefers_x:
 				if (points_array[j].x == last_object.x):
-					if !has_inner_block_between(last_object,points_array[j]):
+					if !has_inner_block_between(last_object,points_array[j].coord):
 						#get all matching points
 						matching_points.append(points_array[j])
 			else:
 				if (points_array[j].y == last_object.y):
-					if !has_inner_block_between(last_object,points_array[j]):
+					if !has_inner_block_between(last_object,points_array[j].coord):
 						#get all matching points
 						matching_points.append(points_array[j])
 	#print("prefers_x: ",prefers_x,": ",matching_points)
@@ -186,10 +190,10 @@ func get_matching_points(
 	return matching_points
 
 
-func handle_multiple_matching_points(matching_points:Array,last_object:Vector2,prefers_x:bool) -> Vector2:
+func handle_multiple_matching_points(matching_points:Array,last_object:Vector2,prefers_x:bool) -> Global.map_point:
 	var distance_of_points:Dictionary
 	for x_point_index in matching_points.size():
-		var i_point = matching_points[x_point_index]
+		var i_point:Global.map_point = matching_points[x_point_index]
 		#makes the distance the key and the point the value for easy sorting and access
 		#print("ORIGINAL POINT = ",last_object)
 		#print("X POINT = ",x_point)
@@ -202,8 +206,8 @@ func handle_multiple_matching_points(matching_points:Array,last_object:Vector2,p
 	#print("CHOSEN OBJECT BASED ON DISTANCE: ",distance_of_points[distance_of_points.keys()[0]])
 	return distance_of_points[keys[0]]
 
-func get_last_point(arr:PackedVector2Array)->Vector2:
-	return arr[arr.size()-1]
+func get_last_point(arr:Array[Global.map_point])->Vector2:
+	return arr[arr.size()-1].coord
 
 
 func has_inner_block_between(point:Vector2,potential_match:Vector2)->bool:
@@ -233,22 +237,24 @@ func has_inner_block_between(point:Vector2,potential_match:Vector2)->bool:
 
 func send_points(recived_id:int):
 	if map_id == recived_id:
-		
-		get_corners()
+		var sorted_map_points:Array[Global.map_point] = get_corners()
 		#var points_array:PackedVector2Array = polygon
 		#points_array.append(polygon[0])
 		#var array_size = points_array.size()
 		#var lowest_x = get_lowest_x(points_array)
 		
-		if sorted_corners.is_empty():
+		if sorted_map_points.is_empty():
 			return
 			
-			
-		sorted_corners.append(sorted_corners[0])
+		var closing_point:Global.map_point = Global.map_point.new(
+			sorted_map_points[0].point_id,sorted_map_points[0].coord
+			)
+		sorted_map_points.append(closing_point)
 			#points_array[point] += Vector2(40,500)
 			
-		
-		SignalBus.update_map.emit(sorted_corners,map_id)
+		#for point in sorted_map_points:
+			#point.print_point()
+		SignalBus.update_map.emit(sorted_map_points,map_id)
 		#print(points_array)
 
 var child_indx:int = 0

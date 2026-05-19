@@ -4,5 +4,5 @@
 
 [node name="map_sub_region" type="Polygon2D"]
 color = Color(1, 0.2733, 0.251395, 0.164706)
-polygon = PackedVector2Array(-42.75, -21, -42.75, 19, 46, 19, 45, -21)
+polygon = PackedVector2Array(-42.75, -21, -42.75, 19, 46, 19, 46, -21)
 script = ExtResource("1_jnv6n")

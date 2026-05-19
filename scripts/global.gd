@@ -20,9 +20,25 @@ var MAP_COORD_MIN:Vector2
 var MAP_COORD_MAX:Vector2
 var MIN_POS:Vector2
 
+## A point with Coordinates and ID, used for map drawing and handling
 class map_point:
+	##Creates a Point With Coordinates and ID
+	func _init(id:int=0,v:Vector2=Vector2.ZERO):
+		point_id = id
+		coord = v
 	var point_id:int
 	var coord:Vector2
+	
+	var x: float:
+		get():
+			return coord.x
+	
+	var y:float = 0.0:
+		get():
+			return coord.y
+	func print_point():
+		print("coord: ",coord," id: ",point_id)
+
 
 ##(left:x,top:y,right:z,bottom:w)
 var cam_bounds:Vector4 = Vector4(-1000000,-1000000,1000000,350):
