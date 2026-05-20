@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dgbfu1gg7aoxk" path="res://scripts/map_sub_region.gd" id="1_jnv6n"]
 
 [node name="map_sub_region" type="Polygon2D"]
-color = Color(1, 0.2733, 0.251395, 0.164706)
+color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-42.75, -21, -42.75, 19, 46, 19, 46, -21)
 script = ExtResource("1_jnv6n")
+sub_poly_points = PackedVector2Array(-42.75, -21, -42.75, 19, 46, 19, 46, -21)

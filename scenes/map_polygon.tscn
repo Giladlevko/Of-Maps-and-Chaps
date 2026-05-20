@@ -4,15 +4,12 @@
 
 [node name="map_polygon" type="Polygon2D" node_paths=PackedStringArray("sub_regions")]
 color = Color(0, 1, 1, 0.117647)
-polygon = PackedVector2Array(-9, 1, 2, 1, 2, -2, -4, -2, -4, -4, -1, -4, -1, -7, -9, -7)
 script = ExtResource("1_u6gms")
 sub_regions = NodePath("sub_regions")
 sub_region_to_modify = 0
-base_poly = PackedVector2Array(-9, 1, 2, 1, 2, -2, -4, -2, -4, -4, -1, -4, -1, -7, -9, -7)
 
 [node name="base_copy" type="Polygon2D" parent="."]
 color = Color(0, 1, 1, 0.117647)
-polygon = PackedVector2Array(-9, 1, 2, 1, 2, -2, -4, -2, -4, -4, -1, -4, -1, -7, -9, -7)
 metadata/_edit_lock_ = true
 
 [node name="sub_regions" type="Node2D" parent="."]

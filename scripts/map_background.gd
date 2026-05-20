@@ -1,10 +1,17 @@
 extends Control
 var map_areas:Dictionary = {}
+
+var complete_map_areas:Dictionary = {}
+
+var visited_areas_ids:Array
+
 var map_ids:Array
 const CHECK_POINT_FLAG:PackedScene = preload("res://scenes/map_flag_button.tscn")
 
 @export var player_icon:Control
 @export var check_points:Control
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -36,8 +43,14 @@ func _draw() -> void:
 		
 		for points_arr:Array[Global.map_point] in map_areas[id]:
 			var poly:PackedVector2Array
+			var skipped_count:int = 0
 			for point in points_arr:
-				poly.append(point.coord)
+				if Global.updated_areas.has(point.point_id):
+					poly.append(point.coord)
+				else:
+					skipped_count+=1
+			#if skipped_count>0:
+				#poly.remove_at(poly.size()-1)
 			draw_polyline_colors(poly,[Color(1,1,1,1)])
 			print("map_poly ",poly)
 			#print("poly: ", poly,type_string(typeof(poly)))

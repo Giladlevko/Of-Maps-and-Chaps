@@ -2,7 +2,7 @@
 extends Polygon2D
 @export var map_id:int = 0
 @export var tile_map_layer:TileMapLayer
-var rect = Rect2(polygon[0],Vector2.ZERO)
+var rect = Rect2()
 var start: Vector2i
 var end: Vector2i
 var sorted_corners: PackedVector2Array = []
@@ -14,7 +14,7 @@ var MAP_SCALE:float
 @export var sub_regions: Node2D
 
 @export_tool_button("Add Sub Region!") var add_region:Callable = add_sub_region
-@export_tool_button("Remove Sub Region") var remove_region = remove_sub_region
+@export_tool_button("Remove Sub Region") var remove_region:Callable = remove_sub_region
 @export var sub_region_to_modify:int = -1
 
 @export var sub_region_id:int:
@@ -44,22 +44,25 @@ var MAP_SCALE:float
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# rect needed for easier check of tiles in the required region
-	if tile_map_layer:
-		SignalBus.get_map_poly_points.connect(send_points)
-		for point in polygon:
-			rect = rect.expand(to_global(point))
-			global_poly.append(to_global(point))
-		#print(rect,name)
-		start = tile_map_layer.to_global(tile_map_layer.local_to_map(rect.position))
-		end = tile_map_layer.to_global(tile_map_layer.local_to_map(rect.position + rect.size))
-		#print("start: ",start,name)
-		#print("end: ",end,name)
-		start.x = snap_to_step(start.x,GRID_STEP)
-		end.x = snap_to_step(end.x,GRID_STEP)
-		start.y = snap_to_step(start.y,GRID_STEP)
-		end.y  = snap_to_step(end.y,GRID_STEP)
-		get_corners()
+	if !Engine.is_editor_hint():
+		for child in sub_regions.get_children():
+			print(child.name)
+		# rect needed for easier check of tiles in the required region
+		if tile_map_layer:
+			SignalBus.get_map_poly_points.connect(send_points)
+			for point in polygon:
+				rect = rect.expand(to_global(point))
+				global_poly.append(to_global(point))
+			#print(rect,name)
+			start = tile_map_layer.to_global(tile_map_layer.local_to_map(rect.position))
+			end = tile_map_layer.to_global(tile_map_layer.local_to_map(rect.position + rect.size))
+			#print("start: ",start,name)
+			#print("end: ",end,name)
+			start.x = snap_to_step(start.x,GRID_STEP)
+			end.x = snap_to_step(end.x,GRID_STEP)
+			start.y = snap_to_step(start.y,GRID_STEP)
+			end.y  = snap_to_step(end.y,GRID_STEP)
+			get_corners()
 		
 
 
@@ -243,9 +246,14 @@ func send_points(recived_id:int):
 		#var array_size = points_array.size()
 		#var lowest_x = get_lowest_x(points_array)
 		
+		
 		if sorted_map_points.is_empty():
 			return
-			
+		
+		if sub_regions.get_child_count()>0:
+			for child:MAP_SUB_REGION in sub_regions.get_children():
+				sorted_map_points = child.update_main_reg_points(sorted_map_points)
+		
 		var closing_point:Global.map_point = Global.map_point.new(
 			sorted_map_points[0].point_id,sorted_map_points[0].coord
 			)
@@ -258,19 +266,22 @@ func send_points(recived_id:int):
 		#print(points_array)
 
 var child_indx:int = 0
+#var sub_reg:MAP_SUB_REGION = MAP_SUB_REGION.new()
 func add_sub_region(sub_id:int = 0):
 	const SUB_POLY:PackedScene = preload("res://scenes/map_sub_region.tscn")
 	var sub_reg = SUB_POLY.instantiate()
+	
 	sub_regions.add_child(sub_reg)
 	sub_reg.owner = get_tree().edited_scene_root
 	sub_reg.sub_id = sub_id
-	sub_reg.color = Color(randf_range(50,255)/255,randf_range(50,255)/255,randf_range(50,255),80.0/255)
+	sub_reg.reg_color = Color(randf_range(50,255)/255,randf_range(50,255)/255,randf_range(50,255)/255,80.0/255)
 	sub_reg.name = "sub_"+str(child_indx)
+	
 	sub_region_to_modify = sub_regions.get_child_count() - 1
 	#set_editable_instance(get_child(child_indx),true)
 	
 	child_indx+=1
-	print("added sub region")
+	print("added sub region to owner: ",sub_reg.owner)
 	pass
 
 func remove_sub_region():
